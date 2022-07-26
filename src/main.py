@@ -8,8 +8,6 @@ root.geometry('300x200')
 controller = widget.PCRController(root)
 controller.pack()
 
-# pd_pcr_view = widget.PDPCRView(root)
-# pd_pcr_view.pack()
 
 root.mainloop()
 
