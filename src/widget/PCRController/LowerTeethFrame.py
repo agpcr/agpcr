@@ -6,15 +6,24 @@ class LowerTeethFrame(tkinter.Frame):
     def __init__(self, master=None, fdi_number=None):
         super().__init__(master, width=64, height=144, borderwidth=1, relief='solid')
 
+        self.fdi_number = fdi_number
+        self.is_missing_teeth = False
+
         # 染められる歯面を描画するCanvasの生成
-        teeth_canvas_frame = TeethCanvas(master=self)
-        teeth_canvas_frame.pack()
+        self.teeth_canvas_frame = TeethCanvas(master=self)
+        self.teeth_canvas_frame.pack()
 
         # 欠損歯をトグル切り替えするボタン
-        missing_teeth_toggle_button_frame = MissingTeethToggleButton(master=self, fdi_number=fdi_number, onClick=lambda ev, fdi_number=fdi_number: print(fdi_number))
-        missing_teeth_toggle_button_frame.pack()
+        self.missing_teeth_toggle_button_frame = MissingTeethToggleButton(master=self, fdi_number=fdi_number, onClick=self.on_click_missing_teeth_toggle)
+        self.missing_teeth_toggle_button_frame.pack()
 
         # PDの入力欄をまとめるフレーム
-        pd_frame = ProbingDepth(master=self)
-        pd_frame.pack()
+        self.pd_frame = ProbingDepth(master=self)
+        self.pd_frame.pack()
 
+    def on_click_missing_teeth_toggle(self, ev):
+        print(self.fdi_number)
+        self.is_missing_teeth = not self.is_missing_teeth
+
+        self.teeth_canvas_frame.toggle_missing(self.is_missing_teeth)
+        self.pd_frame.toggle_missing(self.is_missing_teeth)
