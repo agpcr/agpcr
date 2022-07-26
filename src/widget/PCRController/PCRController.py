@@ -11,28 +11,28 @@ class PCRController(tkinter.Frame):
         margin = 5
 
         # PCR入力部: 上顎 左の入力UI
-        t18 = UpperTeethFrame(self)
+        t18 = UpperTeethFrame(self, fdi_number=18)
         t18.grid(row=0, column=0, padx=margin)
 
-        t17 = UpperTeethFrame(self)
+        t17 = UpperTeethFrame(self, fdi_number=17)
         t17.grid(row=0, column=1, padx=margin)
 
-        t16 = UpperTeethFrame(self)
+        t16 = UpperTeethFrame(self, fdi_number=16)
         t16.grid(row=0, column=2, padx=margin)
 
-        t15 = UpperTeethFrame(self)
+        t15 = UpperTeethFrame(self, fdi_number=15)
         t15.grid(row=0, column=3, padx=margin)
 
-        t14 = UpperTeethFrame(self)
+        t14 = UpperTeethFrame(self, fdi_number=14)
         t14.grid(row=0, column=4, padx=margin)
 
-        t13 = UpperTeethFrame(self)
+        t13 = UpperTeethFrame(self, fdi_number=13)
         t13.grid(row=0, column=5, padx=margin)
 
-        t12 = UpperTeethFrame(self)
+        t12 = UpperTeethFrame(self, fdi_number=12)
         t12.grid(row=0, column=6, padx=margin)
 
-        t11 = UpperTeethFrame(self)
+        t11 = UpperTeethFrame(self, fdi_number=11)
         t11.grid(row=0, column=7, padx=margin)
 
 
@@ -42,28 +42,28 @@ class PCRController(tkinter.Frame):
 
 
         # PCR入力部: 上顎 右の入力UI
-        t21 = UpperTeethFrame(self)
+        t21 = UpperTeethFrame(self, fdi_number=21)
         t21.grid(row=0, column=9, padx=margin)
 
-        t22 = UpperTeethFrame(self)
+        t22 = UpperTeethFrame(self, fdi_number=22)
         t22.grid(row=0, column=10, padx=margin)
 
-        t23 = UpperTeethFrame(self)
+        t23 = UpperTeethFrame(self, fdi_number=23)
         t23.grid(row=0, column=11, padx=margin)
 
-        t24 = UpperTeethFrame(self)
+        t24 = UpperTeethFrame(self, fdi_number=24)
         t24.grid(row=0, column=12, padx=margin)
 
-        t25 = UpperTeethFrame(self)
+        t25 = UpperTeethFrame(self, fdi_number=25)
         t25.grid(row=0, column=13, padx=margin)
 
-        t26 = UpperTeethFrame(self)
+        t26 = UpperTeethFrame(self, fdi_number=26)
         t26.grid(row=0, column=14, padx=margin)
 
-        t27 = UpperTeethFrame(self)
+        t27 = UpperTeethFrame(self, fdi_number=27)
         t27.grid(row=0, column=15, padx=margin)
 
-        t28 = UpperTeethFrame(self)
+        t28 = UpperTeethFrame(self, fdi_number=28)
         t28.grid(row=0, column=16, padx=margin)
 
 
@@ -75,29 +75,29 @@ class PCRController(tkinter.Frame):
 
 
         # PCR入力部: 下顎 左の入力UI
-        t18 = LowerTeethFrame(self)
-        t18.grid(row=2, column=0, padx=margin)
+        t48 = LowerTeethFrame(self, fdi_number=48)
+        t48.grid(row=2, column=0, padx=margin)
 
-        t17 = LowerTeethFrame(self)
-        t17.grid(row=2, column=1, padx=margin)
+        t47 = LowerTeethFrame(self, fdi_number=47)
+        t47.grid(row=2, column=1, padx=margin)
 
-        t16 = LowerTeethFrame(self)
-        t16.grid(row=2, column=2, padx=margin)
+        t46 = LowerTeethFrame(self, fdi_number=46)
+        t46.grid(row=2, column=2, padx=margin)
 
-        t15 = LowerTeethFrame(self)
-        t15.grid(row=2, column=3, padx=margin)
+        t45 = LowerTeethFrame(self, fdi_number=45)
+        t45.grid(row=2, column=3, padx=margin)
 
-        t14 = LowerTeethFrame(self)
-        t14.grid(row=2, column=4, padx=margin)
+        t44 = LowerTeethFrame(self, fdi_number=44)
+        t44.grid(row=2, column=4, padx=margin)
 
-        t13 = LowerTeethFrame(self)
-        t13.grid(row=2, column=5, padx=margin)
+        t43 = LowerTeethFrame(self, fdi_number=43)
+        t43.grid(row=2, column=5, padx=margin)
 
-        t12 = LowerTeethFrame(self)
-        t12.grid(row=2, column=6, padx=margin)
+        t42 = LowerTeethFrame(self, fdi_number=42)
+        t42.grid(row=2, column=6, padx=margin)
 
-        t11 = LowerTeethFrame(self)
-        t11.grid(row=2, column=7, padx=margin)
+        t41 = LowerTeethFrame(self, fdi_number=41)
+        t41.grid(row=2, column=7, padx=margin)
 
 
         # PCR入力部: 下顎の右側・左側の間に入れるスペーサー
@@ -106,29 +106,29 @@ class PCRController(tkinter.Frame):
 
 
         # PCR入力部: 下顎 右の入力UI
-        t21 = LowerTeethFrame(self)
-        t21.grid(row=2, column=9, padx=margin)
+        t31 = LowerTeethFrame(self, fdi_number=31)
+        t31.grid(row=2, column=9, padx=margin)
 
-        t22 = LowerTeethFrame(self)
-        t22.grid(row=2, column=10, padx=margin)
+        t32 = LowerTeethFrame(self, fdi_number=32)
+        t32.grid(row=2, column=10, padx=margin)
 
-        t23 = LowerTeethFrame(self)
-        t23.grid(row=2, column=11, padx=margin)
+        t33 = LowerTeethFrame(self, fdi_number=33)
+        t33.grid(row=2, column=11, padx=margin)
 
-        t24 = LowerTeethFrame(self)
-        t24.grid(row=2, column=12, padx=margin)
+        t34 = LowerTeethFrame(self, fdi_number=34)
+        t34.grid(row=2, column=12, padx=margin)
 
-        t25 = LowerTeethFrame(self)
-        t25.grid(row=2, column=13, padx=margin)
+        t35 = LowerTeethFrame(self, fdi_number=35)
+        t35.grid(row=2, column=13, padx=margin)
 
-        t26 = LowerTeethFrame(self)
-        t26.grid(row=2, column=14, padx=margin)
+        t36 = LowerTeethFrame(self, fdi_number=36)
+        t36.grid(row=2, column=14, padx=margin)
 
-        t27 = LowerTeethFrame(self)
-        t27.grid(row=2, column=15, padx=margin)
+        t37 = LowerTeethFrame(self, fdi_number=37)
+        t37.grid(row=2, column=15, padx=margin)
 
-        t28 = LowerTeethFrame(self)
-        t28.grid(row=2, column=16, padx=margin)
+        t38 = LowerTeethFrame(self, fdi_number=38)
+        t38.grid(row=2, column=16, padx=margin)
 
         #####################################################
         # PCR入力部と、PDPCRの表示部を上下に分けるスペーサー
