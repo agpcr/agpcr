@@ -8,6 +8,7 @@ class TeethCanvas(tkinter.Frame):
         pcr_teeth_canvas_width = 50
         pcr_teeth_canvas_height = 50
 
+        # 欠損歯状態の場合はTrue
         self.is_missing = False
 
         self.canvas = tkinter.Canvas(self,
@@ -59,6 +60,7 @@ class TeethCanvas(tkinter.Frame):
             self.canvas.itemconfigure(self.hidari, fill='white')
 
     def toggle_plane(self, ev, obj_id):
+        # 欠損歯状態でなければ面の 赤 or 白 トグルを行う
         if not self.is_missing:
             next_color, cnt = ('red', 1) if self.canvas.itemcget(obj_id, 'fill') == 'white' else ('white', -1)
             self.canvas.itemconfigure(obj_id, fill=next_color)
