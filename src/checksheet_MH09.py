@@ -160,6 +160,7 @@ percentage_widget.grid(row=2, column=1, sticky=tkinter.W)
 percentage.set(0.000)  # デフォルト値
 summary_frame.pack(anchor=tkinter.W)
 
+# 上顎の欠損歯をトグルするボタンを入れるフレーム
 upper_buttons_frame = tkinter.Frame(root)
 upper_buttons_frame.pack()
 
@@ -169,8 +170,11 @@ canvas = tkinter.Canvas(canvas_frame, width=514, height=100, bg='light yellow')
 canvas.pack()
 canvas_frame.pack()
 
+# 下顎の欠損歯をトグルするボタンを入れるフレーム
 lower_buttons_frame = tkinter.Frame(root)
 lower_buttons_frame.pack()
+
+
 
 center = 260  # 正中線を400pxの点とする
 
