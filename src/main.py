@@ -2,7 +2,7 @@ import tkinter
 from src import widget
 
 root = tkinter.Tk()
-root.geometry('300x200')
+root.geometry('1400x660')
 
 
 controller = widget.PCRController(root)

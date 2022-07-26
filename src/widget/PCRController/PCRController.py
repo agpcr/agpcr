@@ -251,3 +251,36 @@ class PCRController(tkinter.Frame):
 
         pd_pcr38 = TeethCanvas(self)
         pd_pcr38.grid(row=6, column=16)
+
+
+        # PDPCR表示部:上下のコンポーネントのスペースを開ける
+        spacer7 = tkinter.Frame(self)
+        spacer7.grid(row=7, column=0, pady=20)
+
+
+        # 残存歯の計算結果表示
+        # 残存歯のカウント表示用ラベルを作成
+        remaining_teeth_counter = tkinter.IntVar()
+        remaining_teeth_label_widget = tkinter.Label(self, text="残存歯")
+        remaining_teeth_label_widget.grid(row=8, column=0, sticky=tkinter.E)
+        remaining_teeth_widget = tkinter.Label(self, textvariable=remaining_teeth_counter)
+        remaining_teeth_widget.grid(row=8, column=1, sticky=tkinter.W)
+        remaining_teeth_counter.set(0)  # デフォルト値
+
+        # プラーク面数結果表示
+        # 歯面の塗られた数をカウント
+        painted_counter = tkinter.IntVar()
+        painted_label_widget = tkinter.Label(self, text="プラーク面数")
+        painted_label_widget.grid(row=9, column=0, sticky=tkinter.E)
+        painted_widget = tkinter.Label(self, textvariable=painted_counter)
+        painted_widget.grid(row=9, column=1, sticky=tkinter.W)
+        painted_counter.set(0)  # デフォルト値
+
+        # 割合結果表示
+        # 割合を表示
+        percentage = tkinter.DoubleVar()
+        percentage_label_widget = tkinter.Label(self, text="割合")
+        percentage_label_widget.grid(row=10, column=0, sticky=tkinter.E)
+        percentage_widget = tkinter.Label(self, textvariable=percentage)
+        percentage_widget.grid(row=10, column=1, sticky=tkinter.W)
+        percentage.set(0.000)  # デフォルト値
