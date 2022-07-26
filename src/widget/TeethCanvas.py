@@ -46,14 +46,14 @@ class TeethCanvas(tkinter.Frame):
         self.canvas.tag_bind(self.hidari, "<Button-1>", lambda ev, obj_id=self.hidari: self.toggle_plane(ev, obj_id))
 
     def toggle_missing(self, is_missing):
-        if is_missing:
-            self.is_missing = True
+        self.is_missing = is_missing
+
+        if self.is_missing:
             self.canvas.itemconfigure(self.ue, fill='gray')
             self.canvas.itemconfigure(self.migi, fill='gray')
             self.canvas.itemconfigure(self.shita, fill='gray')
             self.canvas.itemconfigure(self.hidari, fill='gray')
         else:
-            self.is_missing = False
             self.canvas.itemconfigure(self.ue, fill='white')
             self.canvas.itemconfigure(self.migi, fill='white')
             self.canvas.itemconfigure(self.shita, fill='white')
