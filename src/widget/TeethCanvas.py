@@ -8,6 +8,8 @@ class TeethCanvas(tkinter.Frame):
         pcr_teeth_canvas_width = 50
         pcr_teeth_canvas_height = 50
 
+        self.is_missing = False
+
         self.canvas = tkinter.Canvas(self,
                                      width=pcr_teeth_canvas_width,
                                      height=pcr_teeth_canvas_height,
@@ -44,16 +46,19 @@ class TeethCanvas(tkinter.Frame):
 
     def toggle_missing(self, is_missing):
         if is_missing:
+            self.is_missing = True
             self.canvas.itemconfigure(self.ue, fill='gray')
             self.canvas.itemconfigure(self.migi, fill='gray')
             self.canvas.itemconfigure(self.shita, fill='gray')
             self.canvas.itemconfigure(self.hidari, fill='gray')
         else:
+            self.is_missing = False
             self.canvas.itemconfigure(self.ue, fill='white')
             self.canvas.itemconfigure(self.migi, fill='white')
             self.canvas.itemconfigure(self.shita, fill='white')
             self.canvas.itemconfigure(self.hidari, fill='white')
 
     def toggle_plane(self, ev, obj_id):
-        next_color, cnt = ('red', 1) if self.canvas.itemcget(obj_id, 'fill') == 'white' else ('white', -1)
-        self.canvas.itemconfigure(obj_id, fill=next_color)
+        if not self.is_missing:
+            next_color, cnt = ('red', 1) if self.canvas.itemcget(obj_id, 'fill') == 'white' else ('white', -1)
+            self.canvas.itemconfigure(obj_id, fill=next_color)
