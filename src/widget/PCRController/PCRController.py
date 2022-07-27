@@ -1,7 +1,8 @@
 import tkinter
 from . import UpperTeethFrame
 from . import LowerTeethFrame
-from .. import TeethCanvas
+from . import UpperTeethFramePDPCRView
+from . import LowerTeethFramePDPCRView
 
 
 class PCRController(tkinter.Frame):
@@ -134,153 +135,184 @@ class PCRController(tkinter.Frame):
         # PCR入力部と、PDPCRの表示部を上下に分けるスペーサー
         #####################################################
         spacer4 = tkinter.Frame(self)
-        spacer4.grid(row=3, column=0, pady=30)
-
-
-        # PDPCRの表示部: 上顎 左
-        pd_pcr18 = TeethCanvas(self)
-        pd_pcr18.grid(row=4, column=0)
-
-        pd_pcr17 = TeethCanvas(self)
-        pd_pcr17.grid(row=4, column=1)
-
-        pd_pcr16 = TeethCanvas(self)
-        pd_pcr16.grid(row=4, column=2)
-
-        pd_pcr15 = TeethCanvas(self)
-        pd_pcr15.grid(row=4, column=3)
-
-        pd_pcr14 = TeethCanvas(self)
-        pd_pcr14.grid(row=4, column=4)
-
-        pd_pcr13 = TeethCanvas(self)
-        pd_pcr13.grid(row=4, column=5)
-
-        pd_pcr12 = TeethCanvas(self)
-        pd_pcr12.grid(row=4, column=6)
-
-        pd_pcr11 = TeethCanvas(self)
-        pd_pcr11.grid(row=4, column=7)
-
-
-        # PDPCRの表示部: 上顎の右側・左側を分けるスペーサー
-        spacer5 = tkinter.Frame(self)
-        spacer5.grid(row=4, column=8, padx=30)
-
-
-        # PDPCR表示部: 上顎 右
-        pd_pcr21 = TeethCanvas(self)
-        pd_pcr21.grid(row=4, column=9)
-
-        pd_pcr22 = TeethCanvas(self)
-        pd_pcr22.grid(row=4, column=10)
-
-        pd_pcr23 = TeethCanvas(self)
-        pd_pcr23.grid(row=4, column=11)
-
-        pd_pcr24 = TeethCanvas(self)
-        pd_pcr24.grid(row=4, column=12)
-
-        pd_pcr25 = TeethCanvas(self)
-        pd_pcr25.grid(row=4, column=13)
-
-        pd_pcr26 = TeethCanvas(self)
-        pd_pcr26.grid(row=4, column=14)
-
-        pd_pcr27 = TeethCanvas(self)
-        pd_pcr27.grid(row=4, column=15)
-
-        pd_pcr28 = TeethCanvas(self)
-        pd_pcr28.grid(row=4, column=16)
-
-
-        # PDPCR表示部:上下のコンポーネントのスペースを開ける
-        spacer6 = tkinter.Frame(self)
-        spacer6.grid(row=5, column=0, pady=10)
-
-
-        # PDPCR表示部: 下顎 左
-        pd_pcr48 = TeethCanvas(self)
-        pd_pcr48.grid(row=6, column=0)
-
-        pd_pcr47 = TeethCanvas(self)
-        pd_pcr47.grid(row=6, column=1)
-
-        pd_pcr46 = TeethCanvas(self)
-        pd_pcr46.grid(row=6, column=2)
-
-        pd_pcr45 = TeethCanvas(self)
-        pd_pcr45.grid(row=6, column=3)
-
-        pd_pcr44 = TeethCanvas(self)
-        pd_pcr44.grid(row=6, column=4)
-
-        pd_pcr43 = TeethCanvas(self)
-        pd_pcr43.grid(row=6, column=5)
-
-        pd_pcr42 = TeethCanvas(self)
-        pd_pcr42.grid(row=6, column=6)
-
-        pd_pcr41 = TeethCanvas(self)
-        pd_pcr41.grid(row=6, column=7)
-
-        # 下顎の右側・左側の間に入れるスペーサー
-        spacer7 = tkinter.Frame(self)
-        spacer7.grid(row=6, column=8, padx=30)
-
-        pd_pcr31 = TeethCanvas(self)
-        pd_pcr31.grid(row=6, column=9)
-
-        pd_pcr32 = TeethCanvas(self)
-        pd_pcr32.grid(row=6, column=10)
-
-        pd_pcr33 = TeethCanvas(self)
-        pd_pcr33.grid(row=6, column=11)
-
-        pd_pcr34 = TeethCanvas(self)
-        pd_pcr34.grid(row=6, column=12)
-
-        pd_pcr35 = TeethCanvas(self)
-        pd_pcr35.grid(row=6, column=13)
-
-        pd_pcr36 = TeethCanvas(self)
-        pd_pcr36.grid(row=6, column=14)
-
-        pd_pcr37 = TeethCanvas(self)
-        pd_pcr37.grid(row=6, column=15)
-
-        pd_pcr38 = TeethCanvas(self)
-        pd_pcr38.grid(row=6, column=16)
-
-
-        # PDPCR表示部:上下のコンポーネントのスペースを開ける
-        spacer7 = tkinter.Frame(self)
-        spacer7.grid(row=7, column=0, pady=20)
-
+        spacer4.grid(row=3, column=0, pady=10)
 
         # 残存歯の計算結果表示
         # 残存歯のカウント表示用ラベルを作成
         remaining_teeth_counter = tkinter.IntVar()
         remaining_teeth_label_widget = tkinter.Label(self, text="残存歯")
-        remaining_teeth_label_widget.grid(row=8, column=0, sticky=tkinter.E)
+        remaining_teeth_label_widget.grid(row=4, column=0, columnspan=2, sticky=tkinter.W)
         remaining_teeth_widget = tkinter.Label(self, textvariable=remaining_teeth_counter)
-        remaining_teeth_widget.grid(row=8, column=1, sticky=tkinter.W)
+        remaining_teeth_widget.grid(row=4, column=2, sticky=tkinter.W)
         remaining_teeth_counter.set(0)  # デフォルト値
 
         # プラーク面数結果表示
         # 歯面の塗られた数をカウント
         painted_counter = tkinter.IntVar()
         painted_label_widget = tkinter.Label(self, text="プラーク面数")
-        painted_label_widget.grid(row=9, column=0, sticky=tkinter.E)
+        painted_label_widget.grid(row=5, column=0, columnspan=2, sticky=tkinter.W)
         painted_widget = tkinter.Label(self, textvariable=painted_counter)
-        painted_widget.grid(row=9, column=1, sticky=tkinter.W)
+        painted_widget.grid(row=5, column=2, sticky=tkinter.W)
         painted_counter.set(0)  # デフォルト値
 
         # 割合結果表示
         # 割合を表示
         percentage = tkinter.DoubleVar()
         percentage_label_widget = tkinter.Label(self, text="割合")
-        percentage_label_widget.grid(row=10, column=0, sticky=tkinter.E)
+        percentage_label_widget.grid(row=6, column=0, columnspan=2, sticky=tkinter.W)
         percentage_widget = tkinter.Label(self, textvariable=percentage)
-        percentage_widget.grid(row=10, column=1, sticky=tkinter.W)
+        percentage_widget.grid(row=6, column=2, sticky=tkinter.W)
         percentage.set(0.000)  # デフォルト値
+
+
+        # PDPCR表示部:上下のコンポーネントのスペースを開ける
+        spacer5 = tkinter.Frame(self)
+        spacer5.grid(row=7, column=0, pady=30)
+
+        # PDPCRの表示部: 上顎 左
+        pd_pcr18 = UpperTeethFramePDPCRView(self, fdi_no="18")
+        pd_pcr18.grid(row=8, column=0)
+
+        pd_pcr17 = UpperTeethFramePDPCRView(self, fdi_no="17")
+        pd_pcr17.grid(row=8, column=1)
+
+        pd_pcr16 = UpperTeethFramePDPCRView(self, fdi_no="16")
+        pd_pcr16.grid(row=8, column=2)
+
+        pd_pcr15 = UpperTeethFramePDPCRView(self, fdi_no="15")
+        pd_pcr15.grid(row=8, column=3)
+
+        pd_pcr14 = UpperTeethFramePDPCRView(self, fdi_no="14")
+        pd_pcr14.grid(row=8, column=4)
+
+        pd_pcr13 = UpperTeethFramePDPCRView(self, fdi_no="13")
+        pd_pcr13.grid(row=8, column=5)
+
+        pd_pcr12 = UpperTeethFramePDPCRView(self, fdi_no="12")
+        pd_pcr12.grid(row=8, column=6)
+
+        pd_pcr11 = UpperTeethFramePDPCRView(self, fdi_no="11")
+        pd_pcr11.grid(row=8, column=7)
+
+
+        # PDPCRの表示部: 上顎の右側・左側を分けるスペーサー
+        spacer6 = tkinter.Frame(self)
+        spacer6.grid(row=8, column=8, padx=30)
+
+
+        # PDPCR表示部: 上顎 右
+        pd_pcr21 = UpperTeethFramePDPCRView(self, fdi_no="21")
+        pd_pcr21.grid(row=8, column=9)
+
+        pd_pcr22 = UpperTeethFramePDPCRView(self, fdi_no="22")
+        pd_pcr22.grid(row=8, column=10)
+
+        pd_pcr23 = UpperTeethFramePDPCRView(self, fdi_no="23")
+        pd_pcr23.grid(row=8, column=11)
+
+        pd_pcr24 = UpperTeethFramePDPCRView(self, fdi_no="24")
+        pd_pcr24.grid(row=8, column=12)
+
+        pd_pcr25 = UpperTeethFramePDPCRView(self, fdi_no="25")
+        pd_pcr25.grid(row=8, column=13)
+
+        pd_pcr26 = UpperTeethFramePDPCRView(self, fdi_no="26")
+        pd_pcr26.grid(row=8, column=14)
+
+        pd_pcr27 = UpperTeethFramePDPCRView(self, fdi_no="27")
+        pd_pcr27.grid(row=8, column=15)
+
+        pd_pcr28 = UpperTeethFramePDPCRView(self, fdi_no="28")
+        pd_pcr28.grid(row=8, column=16)
+
+
+        # PDPCR表示部:上下のコンポーネントのスペースを開ける
+        spacer7 = tkinter.Frame(self)
+        spacer7.grid(row=9, column=0, pady=10)
+
+
+        # PDPCR表示部: 下顎 左
+        pd_pcr48 = LowerTeethFramePDPCRView(self, fdi_no="48")
+        pd_pcr48.grid(row=10, column=0)
+
+        pd_pcr47 = LowerTeethFramePDPCRView(self, fdi_no="47")
+        pd_pcr47.grid(row=10, column=1)
+
+        pd_pcr46 = LowerTeethFramePDPCRView(self, fdi_no="46")
+        pd_pcr46.grid(row=10, column=2)
+
+        pd_pcr45 = LowerTeethFramePDPCRView(self, fdi_no="45")
+        pd_pcr45.grid(row=10, column=3)
+
+        pd_pcr44 = LowerTeethFramePDPCRView(self, fdi_no="44")
+        pd_pcr44.grid(row=10, column=4)
+
+        pd_pcr43 = LowerTeethFramePDPCRView(self, fdi_no="43")
+        pd_pcr43.grid(row=10, column=5)
+
+        pd_pcr42 = LowerTeethFramePDPCRView(self, fdi_no="42")
+        pd_pcr42.grid(row=10, column=6)
+
+        pd_pcr41 = LowerTeethFramePDPCRView(self, fdi_no="41")
+        pd_pcr41.grid(row=10, column=7)
+
+        # 下顎の右側・左側の間に入れるスペーサー
+        spacer8 = tkinter.Frame(self)
+        spacer8.grid(row=10, column=8, padx=30)
+
+        pd_pcr31 = LowerTeethFramePDPCRView(self, fdi_no="31")
+        pd_pcr31.grid(row=10, column=9)
+
+        pd_pcr32 = LowerTeethFramePDPCRView(self, fdi_no="32")
+        pd_pcr32.grid(row=10, column=10)
+
+        pd_pcr33 = LowerTeethFramePDPCRView(self, fdi_no="33")
+        pd_pcr33.grid(row=10, column=11)
+
+        pd_pcr34 = LowerTeethFramePDPCRView(self, fdi_no="34")
+        pd_pcr34.grid(row=10, column=12)
+
+        pd_pcr35 = LowerTeethFramePDPCRView(self, fdi_no="35")
+        pd_pcr35.grid(row=10, column=13)
+
+        pd_pcr36 = LowerTeethFramePDPCRView(self, fdi_no="36")
+        pd_pcr36.grid(row=10, column=14)
+
+        pd_pcr37 = LowerTeethFramePDPCRView(self, fdi_no="37")
+        pd_pcr37.grid(row=10, column=15)
+
+        pd_pcr38 = LowerTeethFramePDPCRView(self, fdi_no="38")
+        pd_pcr38.grid(row=10, column=16)
+
+
+        # PDPCR表示部:下部のサマリー表示部と上下を分けるセパレータ
+        spacer9 = tkinter.Frame(self)
+        spacer9.grid(row=11, column=0, pady=10)
+
+
+        # PD4mm以上の歯数の計算結果表示
+        # 残存歯のカウント表示用ラベルを作成
+        pd_pcr_over_threshold_counter = tkinter.IntVar()
+        pd_pcr_over_threshold_label_widget = tkinter.Label(self, text="PD 4mm以上の歯数")
+        pd_pcr_over_threshold_label_widget.grid(row=12, column=0, columnspan=2, sticky=tkinter.W)
+        pd_pcr_over_threshold_widget = tkinter.Label(self, textvariable=remaining_teeth_counter)
+        pd_pcr_over_threshold_widget.grid(row=12, column=2, sticky=tkinter.W)
+        pd_pcr_over_threshold_counter.set(0)  # デフォルト値
+
+        # プラーク面数結果表示
+        # 歯面の塗られた数をカウント
+        pd_pcr_painted_counter = tkinter.IntVar()
+        pd_pcr_painted_label_widget = tkinter.Label(self, text="プラーク歯面数")
+        pd_pcr_painted_label_widget.grid(row=13, column=0, columnspan=2, sticky=tkinter.W)
+        pd_pcr_painted_widget = tkinter.Label(self, textvariable=painted_counter)
+        pd_pcr_painted_widget.grid(row=13, column=2, sticky=tkinter.W)
+        pd_pcr_painted_counter.set(0)  # デフォルト値
+
+        # 割合結果表示
+        # 割合を表示
+        pd_pcr_percentage = tkinter.DoubleVar()
+        pd_pcr_percentage_label_widget = tkinter.Label(self, text="AG-PCR割合")
+        pd_pcr_percentage_label_widget.grid(row=14, column=0, columnspan=2, sticky=tkinter.W)
+        pd_pcr_percentage_widget = tkinter.Label(self, textvariable=percentage)
+        pd_pcr_percentage_widget.grid(row=14, column=2, sticky=tkinter.W)
+        pd_pcr_percentage.set(0.000)  # デフォルト値

@@ -9,8 +9,8 @@ class UpperTeethFrame(tkinter.Frame):
         # self.grid_propagate(0)
 
         # PDの入力欄をまとめるフレーム
-        pd_frame = ProbingDepth(master=self)
-        pd_frame.pack()
+        pd_frame1 = ProbingDepth(master=self)
+        pd_frame1.pack()
 
         # 欠損歯をトグル切り替えするボタン
         missing_teeth_toggle_button_frame = MissingTeethToggleButton(master=self, fdi_number=fdi_number, onClick=lambda ev, fdi_number=fdi_number: print(fdi_number))
@@ -19,3 +19,7 @@ class UpperTeethFrame(tkinter.Frame):
         # 染められる歯面を描画するCanvasの生成
         teeth_canvas_frame = TeethCanvas(master=self)
         teeth_canvas_frame.pack()
+
+        # PDの入力欄をまとめるフレーム
+        pd_frame2 = ProbingDepth(master=self)
+        pd_frame2.pack()
