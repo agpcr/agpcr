@@ -2,7 +2,7 @@ import tkinter
 
 
 class TeethCanvas(tkinter.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, is_paintable=True):
         super().__init__(master)
 
         pcr_teeth_canvas_width = 50
@@ -39,11 +39,11 @@ class TeethCanvas(tkinter.Frame):
                                        2, 2,
                                        canvas_width / 2, canvas_height / 2,
                                        fill='white', outline='black', width=2.0, joinstyle=tkinter.BEVEL, tags=str(id) + "_l")
-
-        self.canvas.tag_bind(self.ue, "<Button-1>", lambda ev, obj_id=self.ue: self.toggle_plane(ev, obj_id))
-        self.canvas.tag_bind(self.migi, "<Button-1>", lambda ev, obj_id=self.migi: self.toggle_plane(ev, obj_id))
-        self.canvas.tag_bind(self.shita, "<Button-1>", lambda ev, obj_id=self.shita: self.toggle_plane(ev, obj_id))
-        self.canvas.tag_bind(self.hidari, "<Button-1>", lambda ev, obj_id=self.hidari: self.toggle_plane(ev, obj_id))
+        if is_paintable:
+            self.canvas.tag_bind(self.ue, "<Button-1>", lambda ev, obj_id=self.ue: self.toggle_plane(ev, obj_id))
+            self.canvas.tag_bind(self.migi, "<Button-1>", lambda ev, obj_id=self.migi: self.toggle_plane(ev, obj_id))
+            self.canvas.tag_bind(self.shita, "<Button-1>", lambda ev, obj_id=self.shita: self.toggle_plane(ev, obj_id))
+            self.canvas.tag_bind(self.hidari, "<Button-1>", lambda ev, obj_id=self.hidari: self.toggle_plane(ev, obj_id))
 
     def toggle_missing(self, is_missing):
         self.is_missing = is_missing
