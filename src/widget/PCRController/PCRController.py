@@ -311,7 +311,7 @@ class PCRController(tkinter.Frame):
         # 割合結果表示
         # 割合を表示
         pd_pcr_percentage = tkinter.DoubleVar()
-        pd_pcr_percentage_label_widget = tkinter.Label(self, text="AG-PCR割合")
+        pd_pcr_percentage_label_widget = tkinter.Label(self, text="agPCR割合")
         pd_pcr_percentage_label_widget.grid(row=14, column=0, columnspan=2, sticky=tkinter.W)
         pd_pcr_percentage_widget = tkinter.Label(self, textvariable=percentage)
         pd_pcr_percentage_widget.grid(row=14, column=2, sticky=tkinter.W)

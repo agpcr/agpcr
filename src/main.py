@@ -3,7 +3,7 @@ from src import widget
 
 root = tkinter.Tk()
 root.geometry('1400x740')
-
+root.wm_title("agPCR")
 
 controller = widget.PCRController(root)
 controller.pack()
