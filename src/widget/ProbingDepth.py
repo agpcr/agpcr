@@ -15,6 +15,20 @@ class ProbingDepth(tkinter.Frame):
         self.txt3 = tkinter.Entry(self, width=1)
         self.txt3.grid(row=0, column=2)
 
+        self.txt1.bind("<Shift-Return>", self.focus_prev)
+        self.txt1.bind("<Return>", self.focus_next)
+
+        self.txt2.bind("<Shift-Return>", self.focus_prev)
+        self.txt2.bind("<Return>", self.focus_next)
+
+        self.txt3.bind("<Shift-Return>", self.focus_prev)
+        self.txt3.bind("<Return>", self.focus_next)
+
+    def focus_next(self, ev):
+        ev.widget.tk_focusNext().focus()
+
+    def focus_prev(self, ev):
+        ev.widget.tk_focusPrev().focus()
 
     def toggle_missing(self, is_missing_teeth):
         if is_missing_teeth:
