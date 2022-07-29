@@ -3,23 +3,43 @@ from .. import ProbingDepth, MissingTeethToggleButton, TeethCanvas
 
 
 class UpperTeethFrame(tkinter.Frame):
-    def __init__(self, master=None, fdi_number=None):
+    def __init__(self, master=None, fdi_number=None, is_missing_callback=None, on_change_pd=None):
         super().__init__(master, width=64, height=144, borderwidth=1, relief='solid')
-        # self.propagate(0)
-        # self.grid_propagate(0)
+        self.is_missing_callback = is_missing_callback
+        self.on_change_pd = on_change_pd
+
+        self.fdi_number = fdi_number
+        self.is_missing_teeth = False
 
         # PDの入力欄をまとめるフレーム
-        pd_frame1 = ProbingDepth(master=self)
-        pd_frame1.pack()
+        self.pd_frame1 = ProbingDepth(master=self, on_change=self.on_change_probing_depth)
+        self.pd_frame1.pack()
 
         # 欠損歯をトグル切り替えするボタン
-        missing_teeth_toggle_button_frame = MissingTeethToggleButton(master=self, fdi_number=fdi_number, onClick=lambda ev, fdi_number=fdi_number: print(fdi_number))
-        missing_teeth_toggle_button_frame.pack()
+        self.missing_teeth_toggle_button_frame = MissingTeethToggleButton(
+            master=self,
+            fdi_number=fdi_number,
+            onClick=self.on_click_missing_teeth_toggle)
+        self.missing_teeth_toggle_button_frame.pack()
 
         # 染められる歯面を描画するCanvasの生成
-        teeth_canvas_frame = TeethCanvas(master=self)
-        teeth_canvas_frame.pack()
+        self.teeth_canvas_frame = TeethCanvas(master=self)
+        self.teeth_canvas_frame.pack()
 
         # PDの入力欄をまとめるフレーム
-        pd_frame2 = ProbingDepth(master=self)
-        pd_frame2.pack()
+        self.pd_frame2 = ProbingDepth(master=self, on_change=self.on_change_probing_depth)
+        self.pd_frame2.pack()
+
+    def on_click_missing_teeth_toggle(self, ev, fdi_number):
+        self.is_missing_teeth = not self.is_missing_teeth
+
+        self.teeth_canvas_frame.toggle_missing(self.is_missing_teeth)
+        self.pd_frame1.toggle_missing(self.is_missing_teeth)
+        self.pd_frame2.toggle_missing(self.is_missing_teeth)
+
+        self.is_missing_callback(ev, self.fdi_number)
+
+    def on_change_probing_depth(self, nm, idx, mode):
+        pd = self.pd_frame1.get_values(), self.pd_frame2.get_values()
+        self.on_change_pd(self.fdi_number, pd)
+        return pd

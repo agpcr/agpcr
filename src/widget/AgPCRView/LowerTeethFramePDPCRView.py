@@ -5,7 +5,8 @@ from .. import TeethCanvas
 class LowerTeethFramePDPCRView(tkinter.Frame):
 
     def __init__(self, master=None, fdi_no=""):
-        super().__init__(master)
+        super().__init__(master, padx=9.4)
+        self.is_missing_teeth = False
 
         # FDI番号ラベル
         self.fdi_number_label = tkinter.Label(self, text=fdi_no)
@@ -15,4 +16,9 @@ class LowerTeethFramePDPCRView(tkinter.Frame):
         self.teeth_canvas_frame = TeethCanvas(master=self, is_paintable=False)
         self.teeth_canvas_frame.pack()
 
+    def on_missing(self):
+        self.is_missing_teeth = not self.is_missing_teeth
+        self.teeth_canvas_frame.toggle_missing(self.is_missing_teeth)
 
+    def paint_plane(self, color, position):
+        self.teeth_canvas_frame.paint_plane(color, position)

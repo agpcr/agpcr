@@ -2,17 +2,37 @@ import tkinter
 
 
 class ProbingDepth(tkinter.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, on_change=None):
         super().__init__(master)
 
+        registered_validate_cmd = master.register(self.validate)
+
         # PDの入力欄の作成
-        self.txt1 = tkinter.Entry(self, width=1)
+        self.txt1_var = tkinter.StringVar()
+        self.txt1_var.trace('w', on_change)
+        self.txt1 = tkinter.Entry(self,
+                                  width=1,
+                                  validatecommand=(registered_validate_cmd, '%S', '%P'),
+                                  validate='key',
+                                  textvariable=self.txt1_var)
         self.txt1.grid(row=0, column=0)
 
-        self.txt2 = tkinter.Entry(self, width=1)
+        self.txt2_var = tkinter.StringVar()
+        self.txt2_var.trace('w', on_change)
+        self.txt2 = tkinter.Entry(self,
+                                  width=1,
+                                  validatecommand=(registered_validate_cmd, '%S', '%P'),
+                                  validate='key',
+                                  textvariable=self.txt2_var)
         self.txt2.grid(row=0, column=1)
 
-        self.txt3 = tkinter.Entry(self, width=1)
+        self.txt3_var = tkinter.StringVar()
+        self.txt3_var.trace('w', on_change)
+        self.txt3 = tkinter.Entry(self,
+                                  width=1,
+                                  validatecommand=(registered_validate_cmd, '%S', '%P'),
+                                  validate='key',
+                                  textvariable=self.txt3_var)
         self.txt3.grid(row=0, column=2)
 
         self.txt1.bind("<Shift-Return>", self.focus_prev)
@@ -29,6 +49,17 @@ class ProbingDepth(tkinter.Frame):
 
     def focus_prev(self, ev):
         ev.widget.tk_focusPrev().focus()
+
+    def validate(self, diff, prev_value):
+        if not diff.encode('utf-8').isdigit():  # 半角の数値以外入力させない
+            return False
+        if len(prev_value) > 1:  # 一文字以上は入力させない
+            return False
+        return True
+
+    def get_values(self):
+        values = self.txt1_var.get(), self.txt2_var.get(), self.txt3_var.get()
+        return [int(x or 0) for x in values]
 
     def toggle_missing(self, is_missing_teeth):
         if is_missing_teeth:

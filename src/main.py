@@ -1,13 +1,12 @@
 import tkinter
-from src import widget
+from AgPCR import AgPCR
 
 root = tkinter.Tk()
-root.geometry('1400x740')
+root.geometry('1400x770')
 root.wm_title("agPCR")
 
-controller = widget.PCRController(root)
-controller.pack()
-
+agPCR = AgPCR(root)
+agPCR.pack()
 
 root.mainloop()
 

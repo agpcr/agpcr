@@ -1,4 +1,12 @@
 import tkinter
+from enum import Enum
+
+
+class TeethPlane(Enum):
+    TOP = 'TOP'
+    LEFT = 'LEFT'
+    RIGHT = 'RIGHT'
+    BOTTOM = 'BOTTOM'
 
 
 class TeethCanvas(tkinter.Frame):
@@ -64,3 +72,13 @@ class TeethCanvas(tkinter.Frame):
         if not self.is_missing:
             next_color, cnt = ('red', 1) if self.canvas.itemcget(obj_id, 'fill') == 'white' else ('white', -1)
             self.canvas.itemconfigure(obj_id, fill=next_color)
+
+    def paint_plane(self, color, position):
+        if position == TeethPlane.LEFT:
+            self.canvas.itemconfigure(self.hidari, fill=color)
+        elif position == TeethPlane.TOP:
+            self.canvas.itemconfigure(self.ue, fill=color)
+        elif position == TeethPlane.RIGHT:
+            self.canvas.itemconfigure(self.migi, fill=color)
+        elif position == TeethPlane.BOTTOM:
+            self.canvas.itemconfigure(self.shita, fill=color)
