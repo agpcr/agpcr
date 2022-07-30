@@ -13,7 +13,7 @@ class LowerTeethFramePDPCRView(tkinter.Frame):
         self.fdi_number_label.pack()
 
         # 染められる歯面を描画するCanvasの生成
-        self.teeth_canvas_frame = TeethCanvas(master=self, is_paintable=False)
+        self.teeth_canvas_frame = TeethCanvas(master=self, is_paintable=False, missing_color='gray7')
         self.teeth_canvas_frame.pack()
 
     def on_missing(self):

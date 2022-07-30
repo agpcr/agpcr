@@ -197,29 +197,42 @@ class AgPCRView(tkinter.Frame):
     def on_missing(self, fdi_number):
         self.pd_pcr_views[fdi_number].on_missing()
 
-    def on_change_probing_depth(self, fdi_number, pd):
+    def on_change_probing_depth(self, fdi_number, pd, planes):
         # 閾値
         threshold = 4
 
+        # すべてのPDがthreshold以下の場合は無条件で全歯面を
+        all_under_pd_threshold_color = 'gray26'
+        if (max(pd[0]) < threshold) and (max(pd[1]) < threshold):
+            self.pd_pcr_views[fdi_number].paint_plane(all_under_pd_threshold_color, TeethPlane.LEFT)
+            self.pd_pcr_views[fdi_number].paint_plane(all_under_pd_threshold_color, TeethPlane.TOP)
+            self.pd_pcr_views[fdi_number].paint_plane(all_under_pd_threshold_color, TeethPlane.RIGHT)
+            self.pd_pcr_views[fdi_number].paint_plane(all_under_pd_threshold_color, TeethPlane.BOTTOM)
+            return
+
         # 左側の判定
-        if max(pd[0][0], pd[1][0]) >= threshold:
+        if max(pd[0][0], pd[1][0]) >= threshold and planes[TeethPlane.LEFT]:
             self.pd_pcr_views[fdi_number].paint_plane('red', TeethPlane.LEFT)
         else:
             self.pd_pcr_views[fdi_number].paint_plane('white', TeethPlane.LEFT)
 
-        if pd[0][1] >= threshold:
+        if pd[0][1] >= threshold and planes[TeethPlane.TOP]:
             self.pd_pcr_views[fdi_number].paint_plane('red', TeethPlane.TOP)
         else:
             self.pd_pcr_views[fdi_number].paint_plane('white', TeethPlane.TOP)
 
-        if max(pd[0][2], pd[1][2]) >= threshold:
+        if max(pd[0][2], pd[1][2]) >= threshold and planes[TeethPlane.RIGHT]:
             self.pd_pcr_views[fdi_number].paint_plane('red', TeethPlane.RIGHT)
         else:
             self.pd_pcr_views[fdi_number].paint_plane('white', TeethPlane.RIGHT)
 
-        if pd[1][1] >= threshold:
+        if pd[1][1] >= threshold and planes[TeethPlane.BOTTOM]:
             self.pd_pcr_views[fdi_number].paint_plane('red', TeethPlane.BOTTOM)
         else:
             self.pd_pcr_views[fdi_number].paint_plane('white', TeethPlane.BOTTOM)
 
-        print((fdi_number, pd))
+        print((fdi_number, pd, planes))
+
+    def on_change_teeth_plane(self, fdi_number, planes, pd):
+        self.on_change_probing_depth(fdi_number, pd, planes)
+        print((fdi_number, planes))

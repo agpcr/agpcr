@@ -9,7 +9,7 @@ class UpperTeethFramePDPCRView(tkinter.Frame):
         self.is_missing_teeth = False
 
         # 染められる歯面を描画するCanvasの生成
-        self.teeth_canvas_frame = TeethCanvas(master=self, is_paintable=False)
+        self.teeth_canvas_frame = TeethCanvas(master=self, is_paintable=False, missing_color='gray7')
         self.teeth_canvas_frame.pack()
 
         # FDI番号ラベル
@@ -21,4 +21,5 @@ class UpperTeethFramePDPCRView(tkinter.Frame):
         self.teeth_canvas_frame.toggle_missing(self.is_missing_teeth)
 
     def paint_plane(self, color, position):
+        # 外部から指定のポジションの歯面を塗る
         self.teeth_canvas_frame.paint_plane(color, position)

@@ -4,59 +4,77 @@ from . import LowerTeethFrame
 
 
 class PCRController(tkinter.Frame):
-    def __init__(self, master=None, is_missing_callback=None, on_change_probing_depth_callback=None):
+    def __init__(self,
+                 master=None,
+                 is_missing_callback=None,
+                 on_change_probing_depth_callback=None,
+                 on_change_teeth_plane_callback=None):
         super().__init__(master, pady=0)
+
+        # PDの状態が変化した際のコールバック関数
+        self.on_change_probing_depth_callback = on_change_probing_depth_callback
+
+        # 歯面の状態が変化した際のコールバック関数
+        self.on_change_teeth_plane_callback = on_change_teeth_plane_callback
 
         margin = 5
 
         # PCR入力部: 上顎 左の入力UI
-        t18 = UpperTeethFrame(self,
+        self.t18 = UpperTeethFrame(self,
                               fdi_number=18,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t18.grid(row=0, column=0, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t18.grid(row=0, column=0, padx=margin)
 
-        t17 = UpperTeethFrame(self,
+        self.t17 = UpperTeethFrame(self,
                               fdi_number=17,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t17.grid(row=0, column=1, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t17.grid(row=0, column=1, padx=margin)
 
-        t16 = UpperTeethFrame(self,
+        self.t16 = UpperTeethFrame(self,
                               fdi_number=16,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t16.grid(row=0, column=2, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t16.grid(row=0, column=2, padx=margin)
 
-        t15 = UpperTeethFrame(self,
+        self.t15 = UpperTeethFrame(self,
                               fdi_number=15,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t15.grid(row=0, column=3, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t15.grid(row=0, column=3, padx=margin)
 
-        t14 = UpperTeethFrame(self,
+        self.t14 = UpperTeethFrame(self,
                               fdi_number=14,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t14.grid(row=0, column=4, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t14.grid(row=0, column=4, padx=margin)
 
-        t13 = UpperTeethFrame(self,
+        self.t13 = UpperTeethFrame(self,
                               fdi_number=13,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t13.grid(row=0, column=5, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t13.grid(row=0, column=5, padx=margin)
 
-        t12 = UpperTeethFrame(self,
+        self.t12 = UpperTeethFrame(self,
                               fdi_number=12,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t12.grid(row=0, column=6, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t12.grid(row=0, column=6, padx=margin)
 
-        t11 = UpperTeethFrame(self,
+        self.t11 = UpperTeethFrame(self,
                               fdi_number=11,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t11.grid(row=0, column=7, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t11.grid(row=0, column=7, padx=margin)
 
 
         # PCR入力部: 上顎の右側・左側の間に入るスペーサー
@@ -65,53 +83,61 @@ class PCRController(tkinter.Frame):
 
 
         # PCR入力部: 上顎 右の入力UI
-        t21 = UpperTeethFrame(self,
+        self.t21 = UpperTeethFrame(self,
                               fdi_number=21,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t21.grid(row=0, column=9, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t21.grid(row=0, column=9, padx=margin)
 
-        t22 = UpperTeethFrame(self,
+        self.t22 = UpperTeethFrame(self,
                               fdi_number=22,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t22.grid(row=0, column=10, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t22.grid(row=0, column=10, padx=margin)
 
-        t23 = UpperTeethFrame(self,
+        self.t23 = UpperTeethFrame(self,
                               fdi_number=23,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t23.grid(row=0, column=11, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t23.grid(row=0, column=11, padx=margin)
 
-        t24 = UpperTeethFrame(self,
+        self.t24 = UpperTeethFrame(self,
                               fdi_number=24,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t24.grid(row=0, column=12, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t24.grid(row=0, column=12, padx=margin)
 
-        t25 = UpperTeethFrame(self,
+        self.t25 = UpperTeethFrame(self,
                               fdi_number=25,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t25.grid(row=0, column=13, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t25.grid(row=0, column=13, padx=margin)
 
-        t26 = UpperTeethFrame(self,
+        self.t26 = UpperTeethFrame(self,
                               fdi_number=26,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t26.grid(row=0, column=14, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t26.grid(row=0, column=14, padx=margin)
 
-        t27 = UpperTeethFrame(self,
+        self.t27 = UpperTeethFrame(self,
                               fdi_number=27,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t27.grid(row=0, column=15, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t27.grid(row=0, column=15, padx=margin)
 
-        t28 = UpperTeethFrame(self,
+        self.t28 = UpperTeethFrame(self,
                               fdi_number=28,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t28.grid(row=0, column=16, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t28.grid(row=0, column=16, padx=margin)
 
 
 
@@ -122,53 +148,61 @@ class PCRController(tkinter.Frame):
 
 
         # PCR入力部: 下顎 左の入力UI
-        t48 = LowerTeethFrame(self,
+        self.t48 = LowerTeethFrame(self,
                               fdi_number=48,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t48.grid(row=2, column=0, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t48.grid(row=2, column=0, padx=margin)
 
-        t47 = LowerTeethFrame(self,
+        self.t47 = LowerTeethFrame(self,
                               fdi_number=47,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t47.grid(row=2, column=1, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t47.grid(row=2, column=1, padx=margin)
 
-        t46 = LowerTeethFrame(self,
+        self.t46 = LowerTeethFrame(self,
                               fdi_number=46,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t46.grid(row=2, column=2, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t46.grid(row=2, column=2, padx=margin)
 
-        t45 = LowerTeethFrame(self,
+        self.t45 = LowerTeethFrame(self,
                               fdi_number=45,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t45.grid(row=2, column=3, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t45.grid(row=2, column=3, padx=margin)
 
-        t44 = LowerTeethFrame(self,
+        self.t44 = LowerTeethFrame(self,
                               fdi_number=44,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t44.grid(row=2, column=4, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t44.grid(row=2, column=4, padx=margin)
 
-        t43 = LowerTeethFrame(self,
+        self.t43 = LowerTeethFrame(self,
                               fdi_number=43,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t43.grid(row=2, column=5, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t43.grid(row=2, column=5, padx=margin)
 
-        t42 = LowerTeethFrame(self,
+        self.t42 = LowerTeethFrame(self,
                               fdi_number=42,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t42.grid(row=2, column=6, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t42.grid(row=2, column=6, padx=margin)
 
-        t41 = LowerTeethFrame(self,
+        self.t41 = LowerTeethFrame(self,
                               fdi_number=41,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t41.grid(row=2, column=7, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t41.grid(row=2, column=7, padx=margin)
 
 
         # PCR入力部: 下顎の右側・左側の間に入れるスペーサー
@@ -177,53 +211,99 @@ class PCRController(tkinter.Frame):
 
 
         # PCR入力部: 下顎 右の入力UI
-        t31 = LowerTeethFrame(self,
+        self.t31 = LowerTeethFrame(self,
                               fdi_number=31,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t31.grid(row=2, column=9, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t31.grid(row=2, column=9, padx=margin)
 
-        t32 = LowerTeethFrame(self,
+        self.t32 = LowerTeethFrame(self,
                               fdi_number=32,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t32.grid(row=2, column=10, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t32.grid(row=2, column=10, padx=margin)
 
-        t33 = LowerTeethFrame(self,
+        self.t33 = LowerTeethFrame(self,
                               fdi_number=33,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t33.grid(row=2, column=11, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t33.grid(row=2, column=11, padx=margin)
 
-        t34 = LowerTeethFrame(self,
+        self.t34 = LowerTeethFrame(self,
                               fdi_number=34,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t34.grid(row=2, column=12, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t34.grid(row=2, column=12, padx=margin)
 
-        t35 = LowerTeethFrame(self,
+        self.t35 = LowerTeethFrame(self,
                               fdi_number=35,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t35.grid(row=2, column=13, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t35.grid(row=2, column=13, padx=margin)
 
-        t36 = LowerTeethFrame(self,
+        self.t36 = LowerTeethFrame(self,
                               fdi_number=36,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t36.grid(row=2, column=14, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t36.grid(row=2, column=14, padx=margin)
 
-        t37 = LowerTeethFrame(self,
+        self.t37 = LowerTeethFrame(self,
                               fdi_number=37,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t37.grid(row=2, column=15, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t37.grid(row=2, column=15, padx=margin)
 
-        t38 = LowerTeethFrame(self,
+        self.t38 = LowerTeethFrame(self,
                               fdi_number=38,
                               is_missing_callback=is_missing_callback,
-                              on_change_pd=on_change_probing_depth_callback)
-        t38.grid(row=2, column=16, padx=margin)
+                              on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                              on_change_teeth_plane_callback=self.on_change_teeth_plane)
+        self.t38.grid(row=2, column=16, padx=margin)
+
+        self.pcr_frames = {
+            18: self.t18,
+            17: self.t17,
+            16: self.t16,
+            15: self.t15,
+            14: self.t14,
+            13: self.t13,
+            12: self.t12,
+            11: self.t11,
+
+            21: self.t21,
+            22: self.t22,
+            23: self.t23,
+            24: self.t24,
+            25: self.t25,
+            26: self.t26,
+            27: self.t27,
+            28: self.t28,
+
+            48: self.t48,
+            47: self.t47,
+            46: self.t46,
+            45: self.t45,
+            44: self.t44,
+            43: self.t43,
+            42: self.t42,
+            41: self.t41,
+
+            31: self.t31,
+            32: self.t32,
+            33: self.t33,
+            34: self.t34,
+            35: self.t35,
+            36: self.t36,
+            37: self.t37,
+            38: self.t38,
+        }
 
         #####################################################
         # PCR入力部と、PDPCRの表示部を上下に分けるスペーサー
@@ -257,3 +337,9 @@ class PCRController(tkinter.Frame):
         percentage_widget = tkinter.Label(self, textvariable=percentage)
         percentage_widget.grid(row=6, column=2, sticky=tkinter.W)
         percentage.set(0.000)  # デフォルト値
+
+    def on_change_probing_depth(self, fdi_number, pd, planes):
+        self.on_change_probing_depth_callback(fdi_number, pd, planes)
+
+    def on_change_teeth_plane(self, fdi_number, teeth_plane, next_color, planes, pd):
+        self.on_change_teeth_plane_callback(fdi_number, planes, pd)
