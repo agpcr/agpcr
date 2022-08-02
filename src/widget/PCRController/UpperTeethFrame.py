@@ -6,12 +6,12 @@ class UpperTeethFrame(tkinter.Frame):
     def __init__(self,
                  master=None,
                  fdi_number=None,
-                 is_missing_callback=None,
+                 on_change_missing_callback=None,
                  on_change_probing_depth_callback=None,
                  on_change_teeth_plane_callback=None):
         super().__init__(master, width=64, height=144, borderwidth=1, relief='solid')
 
-        self.is_missing_callback = is_missing_callback
+        self.on_change_missing_callback = on_change_missing_callback
         self.on_change_probing_depth_callback = on_change_probing_depth_callback
         self.on_change_teeth_plane_callback = on_change_teeth_plane_callback
 
@@ -44,7 +44,7 @@ class UpperTeethFrame(tkinter.Frame):
         self.pd_frame1.toggle_missing(self.is_missing_teeth)
         self.pd_frame2.toggle_missing(self.is_missing_teeth)
 
-        self.is_missing_callback(ev, self.fdi_number)
+        self.on_change_missing_callback(ev, self.fdi_number)
 
     def on_change_probing_depth(self, nm, idx, mode):
         # PDの状態が変化した際に

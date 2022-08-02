@@ -44,13 +44,16 @@ class ProbingDepth(tkinter.Frame):
         self.txt3.bind("<Shift-Return>", self.focus_prev)
         self.txt3.bind("<Return>", self.focus_next)
 
-    def focus_next(self, ev):
+    @staticmethod
+    def focus_next(ev):
         ev.widget.tk_focusNext().focus()
 
-    def focus_prev(self, ev):
+    @staticmethod
+    def focus_prev(ev):
         ev.widget.tk_focusPrev().focus()
 
-    def validate(self, diff, prev_value):
+    @staticmethod
+    def validate(diff, prev_value):
         if not diff.encode('utf-8').isdigit():  # 半角の数値以外入力させない
             return False
         if len(prev_value) > 1:  # 一文字以上は入力させない

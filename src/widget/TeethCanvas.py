@@ -9,24 +9,42 @@ class TeethPlane(Enum):
     BOTTOM = 'BOTTOM'
 
 
+class TeethState(Enum):
+    NORMAL = 'NORMAL'
+    MISSING = 'MISSING'
+
+
+class TeethPlaneState(Enum):
+    PLAQUE = 'PLAQUE'
+
+
 class TeethCanvas(tkinter.Frame):
     def __init__(self,
                  master=None,
                  plaque_color='red',
                  missing_color='gray54',
+                 under_pd_threshold_color='gray26',
                  is_paintable=True,
-                 on_change_teeth_plane_callback=None):
+                 on_change_teeth_plane_callback=None,
+                 is_missing=False,
+                 is_under_pd=False):
         super().__init__(master)
         self.on_change_teeth_plane_callback = on_change_teeth_plane_callback
 
         self.plaque_color = plaque_color  # 歯垢付着面を表現する色
         self.missing_color = missing_color  # 欠損歯を表現する色
+        self.under_pd_threshold_color = under_pd_threshold_color  # PD警告がない状態を表す色
+
+        self.is_paintable = is_paintable
 
         pcr_teeth_canvas_width = 50
         pcr_teeth_canvas_height = 50
 
         # 欠損歯状態の場合はTrue
         self.is_missing = False
+
+        # PDに異常がない場合はTrue
+        self.is_under_pd = True
 
         self.canvas = tkinter.Canvas(self,
                                      width=pcr_teeth_canvas_width,
@@ -37,28 +55,36 @@ class TeethCanvas(tkinter.Frame):
         canvas_width = pcr_teeth_canvas_width + 2
         canvas_height = pcr_teeth_canvas_height + 2
 
+        # 初期表示の歯面の色を状態に応じて決定する
+        default_plane_color = 'white'
+        if is_missing:
+            default_plane_color = self.missing_color
+
+        if is_under_pd:
+            default_plane_color = self.under_pd_threshold_color
+
         self.ue = self.canvas.create_polygon(2, 2,
                                              canvas_width, 2,
                                              canvas_width / 2, canvas_height / 2,
-                                             fill='white', outline='black', width=2.0, joinstyle=tkinter.BEVEL,
+                                             fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
                                              tags=str(id) + "_l")
 
         self.migi = self.canvas.create_polygon(canvas_width, 2,
                                                canvas_width, canvas_height,
                                                canvas_width / 2, canvas_height / 2,
-                                               fill='white', outline='black', width=2.0, joinstyle=tkinter.BEVEL,
+                                               fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
                                                tags=str(id) + "_l")
 
         self.shita = self.canvas.create_polygon(canvas_width, canvas_height,
                                                 2, canvas_height,
                                                 canvas_width / 2, canvas_height / 2,
-                                                fill='white', outline='black', width=2.0, joinstyle=tkinter.BEVEL,
+                                                fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
                                                 tags=str(id) + "_l")
 
         self.hidari = self.canvas.create_polygon(2, canvas_height,
                                                  2, 2,
                                                  canvas_width / 2, canvas_height / 2,
-                                                 fill='white', outline='black', width=2.0, joinstyle=tkinter.BEVEL,
+                                                 fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
                                                  tags=str(id) + "_l")
 
         # obj_idとTeethPlaneの対応表
@@ -77,7 +103,7 @@ class TeethCanvas(tkinter.Frame):
             TeethPlane.BOTTOM: self.shita
         }
 
-        if is_paintable:
+        if self.is_paintable:
             self.canvas.tag_bind(self.ue, "<Button-1>", lambda ev, obj_id=self.ue: self.toggle_plane(ev, obj_id))
             self.canvas.tag_bind(self.migi, "<Button-1>", lambda ev, obj_id=self.migi: self.toggle_plane(ev, obj_id))
             self.canvas.tag_bind(self.shita, "<Button-1>", lambda ev, obj_id=self.shita: self.toggle_plane(ev, obj_id))
@@ -93,19 +119,37 @@ class TeethCanvas(tkinter.Frame):
             self.canvas.itemconfigure(self.shita, fill=self.missing_color)
             self.canvas.itemconfigure(self.hidari, fill=self.missing_color)
         else:
-            self.canvas.itemconfigure(self.ue, fill='white')
-            self.canvas.itemconfigure(self.migi, fill='white')
-            self.canvas.itemconfigure(self.shita, fill='white')
-            self.canvas.itemconfigure(self.hidari, fill='white')
+            if (self.is_under_pd is True) and (self.is_paintable is False):
+                self.canvas.itemconfigure(self.ue, fill=self.under_pd_threshold_color)
+                self.canvas.itemconfigure(self.migi, fill=self.under_pd_threshold_color)
+                self.canvas.itemconfigure(self.shita, fill=self.under_pd_threshold_color)
+                self.canvas.itemconfigure(self.hidari, fill=self.under_pd_threshold_color)
+            else:
+                self.canvas.itemconfigure(self.ue, fill='white')
+                self.canvas.itemconfigure(self.migi, fill='white')
+                self.canvas.itemconfigure(self.shita, fill='white')
+                self.canvas.itemconfigure(self.hidari, fill='white')
+
+    def set_under_pd(self, is_under_pd, teeth_plane):
+        self.is_under_pd = is_under_pd
+
+        obj_id = self.teeth_plane_to_obj_id[teeth_plane]
+        if self.is_under_pd:
+            self.canvas.itemconfigure(obj_id, fill=self.under_pd_threshold_color)
+        else:
+            self.canvas.itemconfigure(obj_id, fill='white')
+
 
     def toggle_plane(self, ev, obj_id):
         # 欠損歯状態でなければ面の 赤 or 白 トグルを行う
         if not self.is_missing:
-            next_color, cnt = (self.plaque_color, 1) if self.canvas.itemcget(obj_id, 'fill') == 'white' else (
-            'white', -1)
+            now_color = self.canvas.itemcget(obj_id, 'fill')
+            next_color, cnt = (self.plaque_color, 1) if now_color == 'white' else ('white', -1)
+
             self.canvas.itemconfigure(obj_id, fill=next_color)
             if self.on_change_teeth_plane_callback is not None:
-                self.on_change_teeth_plane_callback(self.obj_id_to_teeth_plane[obj_id], next_color,
+                self.on_change_teeth_plane_callback(self.obj_id_to_teeth_plane[obj_id],
+                                                    next_color,
                                                     self.get_plane_state())
 
     def get_plane_state(self):
