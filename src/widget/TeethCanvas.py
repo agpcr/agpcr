@@ -69,27 +69,27 @@ class TeethCanvas(tkinter.Frame):
         if self.teeth_state is TeethState.MISSING:
             default_plane_color = self.missing_color
 
-        self.ue = self.canvas.create_polygon(2, 2,
-                                             canvas_width, 2,
-                                             canvas_width / 2, canvas_height / 2,
+        self.ue = self.canvas.create_polygon(4, 4,
+                                             canvas_width, 4,
+                                             (canvas_width+4) / 2, (canvas_height+4) / 2,
                                              fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
                                              tags=str(id) + "_l")
 
-        self.migi = self.canvas.create_polygon(canvas_width, 2,
+        self.migi = self.canvas.create_polygon(canvas_width, 4,
                                                canvas_width, canvas_height,
-                                               canvas_width / 2, canvas_height / 2,
+                                               (canvas_width+4) / 2, (canvas_height+4) / 2,
                                                fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
                                                tags=str(id) + "_l")
 
         self.shita = self.canvas.create_polygon(canvas_width, canvas_height,
-                                                2, canvas_height,
-                                                canvas_width / 2, canvas_height / 2,
+                                                4, canvas_height,
+                                                (canvas_width+4) / 2, (canvas_height+4) / 2,
                                                 fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
                                                 tags=str(id) + "_l")
 
-        self.hidari = self.canvas.create_polygon(2, canvas_height,
-                                                 2, 2,
-                                                 canvas_width / 2, canvas_height / 2,
+        self.hidari = self.canvas.create_polygon(4, canvas_height,
+                                                 4, 4,
+                                                 (canvas_width+4) / 2, (canvas_height+4) / 2,
                                                  fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
                                                  tags=str(id) + "_l")
 
