@@ -9,7 +9,12 @@ class LowerTeethFrame(tkinter.Frame):
                  on_change_missing_callback=None,
                  on_change_probing_depth_callback=None,
                  on_change_teeth_plane_callback=None):
-        super().__init__(master, width=64, height=144, borderwidth=1, relief='solid')
+        super().__init__(master,
+                         width=64,
+                         height=144,
+                         borderwidth=1,
+                         relief='solid',
+                         bd=0, highlightcolor='gray70', highlightbackground="gray70", highlightthickness=1)
 
         self.on_change_missing_callback = on_change_missing_callback
         self.on_change_probing_depth_callback = on_change_probing_depth_callback

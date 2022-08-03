@@ -22,7 +22,7 @@ class PCRController(tkinter.Frame):
         # 歯面の状態が変化した際のコールバック関数
         self.on_change_teeth_plane_callback = on_change_teeth_plane_callback
 
-        margin = 5
+        margin = 1
 
         # PCR入力部: 上顎 左の入力UI
         self.t18 = UpperTeethFrame(self,
@@ -82,9 +82,9 @@ class PCRController(tkinter.Frame):
         self.t11.grid(row=0, column=7, padx=margin)
 
 
-        # PCR入力部: 上顎の右側・左側の間に入るスペーサー
-        spacer1 = tkinter.Frame(self)
-        spacer1.grid(row=0, column=8, padx=30)
+        # # PCR入力部: 上顎の右側・左側の間に入るスペーサー
+        # spacer1 = tkinter.Frame(self)
+        # spacer1.grid(row=0, column=8, padx=0)
 
 
         # PCR入力部: 上顎 右の入力UI

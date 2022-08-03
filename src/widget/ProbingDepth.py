@@ -6,12 +6,14 @@ class ProbingDepth(tkinter.Frame):
         super().__init__(master)
 
         registered_validate_cmd = master.register(self.validate)
+        font_size = 10
 
         # PDの入力欄の作成
         self.txt1_var = tkinter.StringVar()
         self.txt1_var.trace('w', on_change)
         self.txt1 = tkinter.Entry(self,
-                                  width=1,
+                                  width=2,
+                                  font=('', font_size),
                                   validatecommand=(registered_validate_cmd, '%S', '%P'),
                                   validate='key',
                                   textvariable=self.txt1_var)
@@ -20,7 +22,8 @@ class ProbingDepth(tkinter.Frame):
         self.txt2_var = tkinter.StringVar()
         self.txt2_var.trace('w', on_change)
         self.txt2 = tkinter.Entry(self,
-                                  width=1,
+                                  width=2,
+                                  font=('', font_size),
                                   validatecommand=(registered_validate_cmd, '%S', '%P'),
                                   validate='key',
                                   textvariable=self.txt2_var)
@@ -29,7 +32,8 @@ class ProbingDepth(tkinter.Frame):
         self.txt3_var = tkinter.StringVar()
         self.txt3_var.trace('w', on_change)
         self.txt3 = tkinter.Entry(self,
-                                  width=1,
+                                  width=2,
+                                  font=('', font_size),
                                   validatecommand=(registered_validate_cmd, '%S', '%P'),
                                   validate='key',
                                   textvariable=self.txt3_var)
@@ -56,7 +60,7 @@ class ProbingDepth(tkinter.Frame):
     def validate(diff, prev_value):
         if not diff.encode('utf-8').isdigit():  # 半角の数値以外入力させない
             return False
-        if len(prev_value) > 1:  # 一文字以上は入力させない
+        if len(prev_value) > 2:  # 2文字以上は入力させない
             return False
         return True
 
