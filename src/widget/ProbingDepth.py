@@ -73,6 +73,9 @@ class ProbingDepth(tkinter.Frame):
             self.txt1.config(state=tkinter.DISABLED)
             self.txt2.config(state=tkinter.DISABLED)
             self.txt3.config(state=tkinter.DISABLED)
+            self.txt1_var.set('')
+            self.txt2_var.set('')
+            self.txt3_var.set('')
         else:
             self.txt1.config(state=tkinter.NORMAL)
             self.txt2.config(state=tkinter.NORMAL)
