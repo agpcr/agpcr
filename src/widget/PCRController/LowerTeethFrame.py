@@ -50,7 +50,7 @@ class LowerTeethFrame(tkinter.Frame):
         # PDの状態が変化した際に
         # このFrameが管理しているPD入力欄の値をまとめてコールバックに引き渡す
         pd = self.get_probing_depth()
-        self.on_change_probing_depth_callback(self.fdi_number, pd, self.teeth_canvas_frame.get_plane_state())
+        self.on_change_probing_depth_callback(self.fdi_number, pd, self.teeth_canvas_frame.get_teeth_plane_state())
         return pd
 
     def on_change_teeth_plane(self, teeth_plane, color, planes):
@@ -60,4 +60,4 @@ class LowerTeethFrame(tkinter.Frame):
         return self.pd_frame1.get_values(), self.pd_frame2.get_values()
 
     def get_plane_state(self):
-        return self.teeth_canvas_frame.get_plane_state()
+        return self.teeth_canvas_frame.get_teeth_plane_state()

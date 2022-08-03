@@ -29,9 +29,13 @@ class TeethCanvas(tkinter.Frame):
                  under_pd_threshold_color='gray26',
                  is_paintable=True,
                  on_change_teeth_plane_callback=None,
-                 is_missing=False,
-                 is_under_pd=False):
+                 initial_teeth_state=TeethState.NORMAL):
         super().__init__(master)
+
+        # １歯全体の状態
+        self.teeth_state = initial_teeth_state
+
+        # 歯面の状態
         self.teeth_plane_state = {
             TeethPlane.TOP: TeethPlaneState.NORMAL,
             TeethPlane.RIGHT: TeethPlaneState.NORMAL,
@@ -51,12 +55,6 @@ class TeethCanvas(tkinter.Frame):
         pcr_teeth_canvas_width = 50
         pcr_teeth_canvas_height = 50
 
-        # 欠損歯状態の場合はTrue
-        self.is_missing = False
-
-        # PDに異常がない場合はTrue
-        self.is_under_pd = True
-
         self.canvas = tkinter.Canvas(self,
                                      width=pcr_teeth_canvas_width,
                                      height=pcr_teeth_canvas_height,
@@ -67,12 +65,9 @@ class TeethCanvas(tkinter.Frame):
         canvas_height = pcr_teeth_canvas_height + 2
 
         # 初期表示の歯面の色を状態に応じて決定する
-        default_plane_color = 'white'
-        if is_missing:
+        default_plane_color = self.normal_color
+        if self.teeth_state is TeethState.MISSING:
             default_plane_color = self.missing_color
-
-        if is_under_pd:
-            default_plane_color = self.under_pd_threshold_color
 
         self.ue = self.canvas.create_polygon(2, 2,
                                              canvas_width, 2,
@@ -122,42 +117,44 @@ class TeethCanvas(tkinter.Frame):
                                  lambda ev, obj_id=self.hidari: self.toggle_plane(ev, obj_id))
 
     def toggle_missing(self, is_missing):
-        self.is_missing = is_missing
+        if is_missing:
+            # 全歯面を欠損歯色に塗る
+            for obj_id in self.teeth_plane_to_obj_id.values():
+                self.canvas.itemconfigure(obj_id, fill=self.missing_color)
 
-        if self.is_missing:
-            self.canvas.itemconfigure(self.ue, fill=self.missing_color)
-            self.canvas.itemconfigure(self.migi, fill=self.missing_color)
-            self.canvas.itemconfigure(self.shita, fill=self.missing_color)
-            self.canvas.itemconfigure(self.hidari, fill=self.missing_color)
+            # 欠損歯に設定する
+            self.teeth_state = TeethState.MISSING
         else:
-            if (self.is_under_pd is True) and (self.is_paintable is False):
-                self.canvas.itemconfigure(self.ue, fill=self.under_pd_threshold_color)
-                self.canvas.itemconfigure(self.migi, fill=self.under_pd_threshold_color)
-                self.canvas.itemconfigure(self.shita, fill=self.under_pd_threshold_color)
-                self.canvas.itemconfigure(self.hidari, fill=self.under_pd_threshold_color)
-            else:
-                self.canvas.itemconfigure(self.ue, fill='white')
-                self.canvas.itemconfigure(self.migi, fill='white')
-                self.canvas.itemconfigure(self.shita, fill='white')
-                self.canvas.itemconfigure(self.hidari, fill='white')
-
-    def set_under_pd(self, is_under_pd, teeth_plane):
-        self.is_under_pd = is_under_pd
-
-        obj_id = self.teeth_plane_to_obj_id[teeth_plane]
-        if self.is_under_pd:
-            self.canvas.itemconfigure(obj_id, fill=self.under_pd_threshold_color)
-        else:
-            self.canvas.itemconfigure(obj_id, fill='white')
-
+            # 全歯面を現在の状態に応じて塗り戻す
+            for plane, state in self.teeth_plane_state.items():
+                if state == TeethPlaneState.NORMAL:
+                    self.canvas.itemconfigure(self.teeth_plane_to_obj_id[plane], fill=self.normal_color)
+                if state == TeethPlaneState.PLAQUE:
+                    self.canvas.itemconfigure(self.teeth_plane_to_obj_id[plane], fill=self.plaque_color)
+                if state == TeethPlaneState.UNDER_PD:
+                    self.canvas.itemconfigure(self.teeth_plane_to_obj_id[plane], fill=self.under_pd_threshold_color)
+            # 健康歯に設定する
+            self.teeth_state = TeethState.NORMAL
 
     def toggle_plane(self, ev, obj_id):
         # 欠損歯状態でなければ面の 赤 or 白 トグルを行う
-        if not self.is_missing:
-            now_color = self.canvas.itemcget(obj_id, 'fill')
-            next_color, cnt = (self.plaque_color, 1) if now_color == 'white' else ('white', -1)
+        if self.teeth_state is not TeethState.MISSING:
+            teeth_plane = self.obj_id_to_teeth_plane[obj_id]
+            now_plane_state = self.teeth_plane_state[teeth_plane]
 
+            if now_plane_state == TeethPlaneState.NORMAL:
+                next_color = self.plaque_color
+                next_state = TeethPlaneState.PLAQUE
+            else:
+                next_color = self.normal_color
+                next_state = TeethPlaneState.NORMAL
+
+            # 歯面の色を変更する
             self.canvas.itemconfigure(obj_id, fill=next_color)
+
+            # 歯面の状態を変更する
+            self.teeth_plane_state[teeth_plane] = next_state
+
             if self.on_change_teeth_plane_callback is not None:
                 self.on_change_teeth_plane_callback(self.obj_id_to_teeth_plane[obj_id],
                                                     next_color,
@@ -166,34 +163,25 @@ class TeethCanvas(tkinter.Frame):
     def get_teeth_plane_state(self):
         return self.teeth_plane_state
 
-    def paint_plane(self, color, position):
-        # 外部から指定されたpositionと対応する歯面を指定のcolorで塗る
-        obj_id = self.teeth_plane_to_obj_id[position]
-        self.canvas.itemconfigure(obj_id, fill=color)
-        if self.on_change_teeth_plane_callback is not None:
-            self.on_change_teeth_plane_callback(position, color, self.get_teeth_plane_state())
-
-    def has_plaque(self, position):
-        obj_id = self.teeth_plane_to_obj_id[position]
-        now_color = self.canvas.itemcget(obj_id, 'fill')
-        return now_color == self.plaque_color
-
     def set_teeth_plane_state(self, teeth_plane, teeth_plane_state):
         obj_id = self.teeth_plane_to_obj_id[teeth_plane]
 
         color = 'white'
+        if teeth_plane_state is TeethPlaneState.UNDER_PD:
+            color = self.under_pd_threshold_color
+            self.teeth_plane_state[teeth_plane] = TeethPlaneState.UNDER_PD
         if teeth_plane_state == TeethPlaneState.PLAQUE:
             color = self.plaque_color
             self.teeth_plane_state[teeth_plane] = TeethPlaneState.PLAQUE
         if teeth_plane_state == TeethPlaneState.NORMAL:
             color = self.normal_color
             self.teeth_plane_state[teeth_plane] = TeethPlaneState.NORMAL
-        if teeth_plane_state == TeethPlaneState.UNDER_PD:
-            color = self.under_pd_threshold_color
-            self.teeth_plane_state[teeth_plane] = TeethPlaneState.UNDER_PD
 
         # 歯面の色を変更する
         self.canvas.itemconfigure(obj_id, fill=color)
 
         if self.on_change_teeth_plane_callback is not None:
             self.on_change_teeth_plane_callback(teeth_plane, color, self.get_teeth_plane_state())
+
+    def get_teeth_state(self):
+        return self.teeth_state

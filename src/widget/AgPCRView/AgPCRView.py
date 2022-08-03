@@ -1,6 +1,6 @@
 import tkinter
 from . import LowerTeethFramePDPCRView, UpperTeethFramePDPCRView
-from ..TeethCanvas import TeethPlane
+from ..TeethCanvas import TeethPlane, TeethPlaneState, TeethState
 
 
 class AgPCRView(tkinter.Frame):
@@ -170,7 +170,7 @@ class AgPCRView(tkinter.Frame):
         # PD4mm以上の歯数の計算結果表示
         # 残存歯のカウント表示用ラベルを作成
         self.pd_pcr_over_threshold_counter = tkinter.IntVar()
-        pd_pcr_over_threshold_label_widget = tkinter.Label(self, text="PD 4mm以上の歯数")
+        pd_pcr_over_threshold_label_widget = tkinter.Label(self, text="PD 4mm以上の歯面数")
         pd_pcr_over_threshold_label_widget.grid(row=4, column=0, columnspan=2, sticky=tkinter.W)
         pd_pcr_over_threshold_widget = tkinter.Label(self, textvariable=self.pd_pcr_over_threshold_counter)
         pd_pcr_over_threshold_widget.grid(row=4, column=2, sticky=tkinter.W)
@@ -195,77 +195,79 @@ class AgPCRView(tkinter.Frame):
         self.pd_pcr_percentage.set(0.000)  # デフォルト値
 
         # 初回計算
-        missing_teeth, plaque_plane, percentage = self.aggregate_pcr()
-        self.pd_pcr_over_threshold_counter.set(missing_teeth)
+        over_pd_planes, plaque_plane, percentage = self.aggregate_pd_pcr()
+        self.pd_pcr_over_threshold_counter.set(over_pd_planes)
         self.pd_pcr_painted_counter.set(plaque_plane)
-        # self.percentage.set(round(percentage, 3))
+        self.pd_pcr_percentage.set(round(percentage, 3))
 
-    def aggregate_pcr(self):
-        missing_teeth = 0
+    def aggregate_pd_pcr(self):
+        over_pd_planes = 0
         plaque_plane = 0
-        plane = 0
         for frame in self.pd_pcr_views.values():
-            # プラーク歯面をカウント
-            plane_state = frame.get_plane_state()
-            for plaque in plane_state.values():
-                if plaque:
-                    plaque_plane = plaque_plane + 1
+            # 欠損歯は除外する
+            teeth_state = frame.get_teeth_state()
+            if teeth_state is TeethState.NORMAL:
+                plane_state = frame.get_plane_state()
+                for state in plane_state.values():
+                    # PD 4mm以上の歯面数をカウント
+                    if state is TeethPlaneState.NORMAL or state is TeethPlaneState.PLAQUE:
+                        over_pd_planes = over_pd_planes + 1
 
-            # threshold以上のpdがある歯数をカウント
-            if not frame.is_missing_teeth:
-                missing_teeth = missing_teeth + 1
-
-                # 残存歯の歯面数をカウント
-                plane = plane + len(plane_state)
-        percentage = (plaque_plane / plane) * 100
-        return missing_teeth, plaque_plane, percentage
+                    # プラーク歯面数をカウント
+                    if state is TeethPlaneState.PLAQUE:
+                        plaque_plane = plaque_plane + 1
+        try:
+            percentage = (plaque_plane / over_pd_planes) * 100
+        except ZeroDivisionError:
+            percentage = 0
+        return over_pd_planes, plaque_plane, percentage
 
     def on_change_missing(self, fdi_number):
         self.pd_pcr_views[fdi_number].on_missing()
+
+        over_pd_planes, plaque_plane, percentage = self.aggregate_pd_pcr()
+        self.pd_pcr_over_threshold_counter.set(over_pd_planes)
+        self.pd_pcr_painted_counter.set(plaque_plane)
+        self.pd_pcr_percentage.set(round(percentage, 3))
 
     def on_change_probing_depth(self, fdi_number, pd, planes):
         # 閾値
         threshold = 4
 
         # 左側の判定
-        if max(pd[0][0], pd[1][0]) >= threshold and planes[TeethPlane.LEFT]:
+        if max(pd[0][0], pd[1][0]) >= threshold and planes[TeethPlane.LEFT] is TeethPlaneState.PLAQUE:
             # PD4mm以上、プラーク(+)→赤表示
-            self.pd_pcr_views[fdi_number].set_under_pd(False, TeethPlane.LEFT)
-            self.pd_pcr_views[fdi_number].paint_plane('red', TeethPlane.LEFT)
-        elif max(pd[0][0], pd[1][0]) >= threshold and not planes[TeethPlane.LEFT]:
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.LEFT, TeethPlaneState.PLAQUE)
+        elif max(pd[0][0], pd[1][0]) >= threshold and planes[TeethPlane.LEFT] is TeethPlaneState.NORMAL:
             # PD4mm以上、プラーク（ー）→白表示
-            self.pd_pcr_views[fdi_number].set_under_pd(False, TeethPlane.LEFT)
-            self.pd_pcr_views[fdi_number].paint_plane('white', TeethPlane.LEFT)
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.LEFT, TeethPlaneState.NORMAL)
         else:
             # PD4mm未満→全てグレー
-            self.pd_pcr_views[fdi_number].set_under_pd(True, TeethPlane.LEFT)
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.LEFT, TeethPlaneState.UNDER_PD)
 
-        if pd[0][1] >= threshold and planes[TeethPlane.TOP]:
-            self.pd_pcr_views[fdi_number].set_under_pd(False, TeethPlane.TOP)
-            self.pd_pcr_views[fdi_number].paint_plane('red', TeethPlane.TOP)
-        elif pd[0][1] >= threshold and not planes[TeethPlane.TOP]:
-            self.pd_pcr_views[fdi_number].set_under_pd(False, TeethPlane.TOP)
-            self.pd_pcr_views[fdi_number].paint_plane('white', TeethPlane.TOP)
+        # 上側の判定
+        if pd[0][1] >= threshold and planes[TeethPlane.TOP] is TeethPlaneState.PLAQUE:
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.TOP, TeethPlaneState.PLAQUE)
+        elif pd[0][1] >= threshold and planes[TeethPlane.TOP] is TeethPlaneState.NORMAL:
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.TOP, TeethPlaneState.NORMAL)
         else:
-            self.pd_pcr_views[fdi_number].set_under_pd(True, TeethPlane.TOP)
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.TOP, TeethPlaneState.UNDER_PD)
 
-        if max(pd[0][2], pd[1][2]) >= threshold and planes[TeethPlane.RIGHT]:
-            self.pd_pcr_views[fdi_number].set_under_pd(False, TeethPlane.RIGHT)
-            self.pd_pcr_views[fdi_number].paint_plane('red', TeethPlane.RIGHT)
-        elif max(pd[0][2], pd[1][2]) >= threshold and not planes[TeethPlane.RIGHT]:
-            self.pd_pcr_views[fdi_number].set_under_pd(False, TeethPlane.RIGHT)
-            self.pd_pcr_views[fdi_number].paint_plane('white', TeethPlane.RIGHT)
+        # 右側の判定
+        if max(pd[0][2], pd[1][2]) >= threshold and planes[TeethPlane.RIGHT] is TeethPlaneState.PLAQUE:
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.RIGHT, TeethPlaneState.PLAQUE)
+        elif max(pd[0][2], pd[1][2]) >= threshold and planes[TeethPlane.RIGHT] is TeethPlaneState.NORMAL:
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.RIGHT, TeethPlaneState.NORMAL)
         else:
-            self.pd_pcr_views[fdi_number].set_under_pd(True, TeethPlane.RIGHT)
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.RIGHT, TeethPlaneState.UNDER_PD)
 
-        if pd[1][1] >= threshold and planes[TeethPlane.BOTTOM]:
-            self.pd_pcr_views[fdi_number].set_under_pd(False, TeethPlane.BOTTOM)
-            self.pd_pcr_views[fdi_number].paint_plane('red', TeethPlane.BOTTOM)
-        elif pd[1][1] >= threshold and not planes[TeethPlane.BOTTOM]:
-            self.pd_pcr_views[fdi_number].set_under_pd(False, TeethPlane.BOTTOM)
-            self.pd_pcr_views[fdi_number].paint_plane('white', TeethPlane.BOTTOM)
+        # 下側の判定
+        if pd[1][1] >= threshold and planes[TeethPlane.BOTTOM] is TeethPlaneState.PLAQUE:
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.BOTTOM, TeethPlaneState.PLAQUE)
+        elif pd[1][1] >= threshold and planes[TeethPlane.BOTTOM] is TeethPlaneState.NORMAL:
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.BOTTOM, TeethPlaneState.NORMAL)
         else:
-            self.pd_pcr_views[fdi_number].set_under_pd(True, TeethPlane.BOTTOM)
+            self.pd_pcr_views[fdi_number].set_teeth_plane_state(TeethPlane.BOTTOM, TeethPlaneState.UNDER_PD)
 
         # すべてのPDがthreshold以下の場合は無条件で全歯面を閾値以下表示状態にする
         # if (max(pd[0]) < threshold) and (max(pd[1]) < threshold):
@@ -273,9 +275,18 @@ class AgPCRView(tkinter.Frame):
         #     self.pd_pcr_views[fdi_number].set_under_pd(True, TeethPlane.TOP)
         #     self.pd_pcr_views[fdi_number].set_under_pd(True, TeethPlane.RIGHT)
         #     self.pd_pcr_views[fdi_number].set_under_pd(True, TeethPlane.BOTTOM)
+        over_pd_planes, plaque_plane, percentage = self.aggregate_pd_pcr()
+        self.pd_pcr_over_threshold_counter.set(over_pd_planes)
+        self.pd_pcr_painted_counter.set(plaque_plane)
+        self.pd_pcr_percentage.set(round(percentage, 3))
 
         print((fdi_number, pd, planes))
 
     def on_change_teeth_plane(self, fdi_number, planes, pd):
         self.on_change_probing_depth(fdi_number, pd, planes)
+
+        over_pd_planes, plaque_plane, percentage = self.aggregate_pd_pcr()
+        self.pd_pcr_over_threshold_counter.set(over_pd_planes)
+        self.pd_pcr_painted_counter.set(plaque_plane)
+        self.pd_pcr_percentage.set(round(percentage, 3))
         print((fdi_number, planes))

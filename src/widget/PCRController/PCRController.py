@@ -1,6 +1,7 @@
 import tkinter
 from . import UpperTeethFrame
 from . import LowerTeethFrame
+from ..TeethCanvas import TeethPlaneState
 
 
 class PCRController(tkinter.Frame):
@@ -354,8 +355,8 @@ class PCRController(tkinter.Frame):
         for frame in self.pcr_frames.values():
             # プラーク歯面をカウント
             plane_state = frame.get_plane_state()
-            for plaque in plane_state.values():
-                if plaque:
+            for state in plane_state.values():
+                if state is TeethPlaneState.PLAQUE:
                     plaque_plane = plaque_plane + 1
 
             # 残存歯をカウント
