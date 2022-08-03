@@ -2,6 +2,7 @@ import tkinter
 from . import UpperTeethFrame
 from . import LowerTeethFrame
 from ..TeethCanvas import TeethPlaneState
+from decimal import Decimal, ROUND_HALF_UP
 
 
 class PCRController(tkinter.Frame):
@@ -335,18 +336,18 @@ class PCRController(tkinter.Frame):
 
         # 割合結果表示
         # 割合を表示
-        self.percentage = tkinter.DoubleVar()
+        self.percentage = tkinter.StringVar()
         percentage_label_widget = tkinter.Label(self, text="割合")
         percentage_label_widget.grid(row=6, column=0, columnspan=2, sticky=tkinter.W)
         percentage_widget = tkinter.Label(self, textvariable=self.percentage)
         percentage_widget.grid(row=6, column=2, sticky=tkinter.W)
-        self.percentage.set(0.000)  # デフォルト値
+        self.percentage.set(str(Decimal('0.000').quantize(Decimal('0.01'), ROUND_HALF_UP)))  # デフォルト値
 
         # 初回計算
         missing_teeth, plaque_plane, percentage = self.aggregate_pcr()
         self.remaining_teeth_counter.set(missing_teeth)
         self.painted_counter.set(plaque_plane)
-        self.percentage.set(round(percentage, 3))
+        self.percentage.set(str(Decimal(percentage).quantize(Decimal('0.01'), ROUND_HALF_UP)))
 
     def aggregate_pcr(self):
         missing_teeth = 0
@@ -372,7 +373,7 @@ class PCRController(tkinter.Frame):
         missing_teeth, plaque_plane, percentage = self.aggregate_pcr()
         self.remaining_teeth_counter.set(missing_teeth)
         self.painted_counter.set(plaque_plane)
-        self.percentage.set(round(percentage, 3))
+        self.percentage.set(str(Decimal(percentage).quantize(Decimal('0.01'), ROUND_HALF_UP)))
 
         self.on_change_missing_callback(ev, fdi_number)
 
@@ -380,7 +381,7 @@ class PCRController(tkinter.Frame):
         missing_teeth, plaque_plane, percentage = self.aggregate_pcr()
         self.remaining_teeth_counter.set(missing_teeth)
         self.painted_counter.set(plaque_plane)
-        self.percentage.set(round(percentage, 3))
+        self.percentage.set(str(Decimal(percentage).quantize(Decimal('0.01'), ROUND_HALF_UP)))
 
         self.on_change_probing_depth_callback(fdi_number, pd, planes)
 
@@ -388,6 +389,6 @@ class PCRController(tkinter.Frame):
         missing_teeth, plaque_plane, percentage = self.aggregate_pcr()
         self.remaining_teeth_counter.set(missing_teeth)
         self.painted_counter.set(plaque_plane)
-        self.percentage.set(round(percentage, 3))
+        self.percentage.set(str(Decimal(percentage).quantize(Decimal('0.01'), ROUND_HALF_UP)))
 
         self.on_change_teeth_plane_callback(fdi_number, planes, pd)

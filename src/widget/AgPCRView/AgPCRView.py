@@ -1,7 +1,7 @@
 import tkinter
 from . import LowerTeethFramePDPCRView, UpperTeethFramePDPCRView
 from ..TeethCanvas import TeethPlane, TeethPlaneState, TeethState
-
+from decimal import Decimal, ROUND_HALF_UP
 
 class AgPCRView(tkinter.Frame):
 
@@ -187,18 +187,18 @@ class AgPCRView(tkinter.Frame):
 
         # 割合結果表示
         # 割合を表示
-        self.pd_pcr_percentage = tkinter.DoubleVar()
+        self.pd_pcr_percentage = tkinter.StringVar()
         pd_pcr_percentage_label_widget = tkinter.Label(self, text="agPCR割合")
         pd_pcr_percentage_label_widget.grid(row=6, column=0, columnspan=2, sticky=tkinter.W)
         pd_pcr_percentage_widget = tkinter.Label(self, textvariable=self.pd_pcr_percentage)
         pd_pcr_percentage_widget.grid(row=6, column=2, sticky=tkinter.W)
-        self.pd_pcr_percentage.set(0.000)  # デフォルト値
+        self.pd_pcr_percentage.set(str(Decimal(0).quantize(Decimal('0.01'), ROUND_HALF_UP)))  # デフォルト値
 
         # 初回計算
         over_pd_planes, plaque_plane, percentage = self.aggregate_pd_pcr()
         self.pd_pcr_over_threshold_counter.set(over_pd_planes)
         self.pd_pcr_painted_counter.set(plaque_plane)
-        self.pd_pcr_percentage.set(round(percentage, 3))
+        self.pd_pcr_percentage.set(str(Decimal(percentage).quantize(Decimal('0.01'), ROUND_HALF_UP)))
 
     def aggregate_pd_pcr(self):
         over_pd_planes = 0
@@ -228,7 +228,7 @@ class AgPCRView(tkinter.Frame):
         over_pd_planes, plaque_plane, percentage = self.aggregate_pd_pcr()
         self.pd_pcr_over_threshold_counter.set(over_pd_planes)
         self.pd_pcr_painted_counter.set(plaque_plane)
-        self.pd_pcr_percentage.set(round(percentage, 3))
+        self.pd_pcr_percentage.set(str(Decimal(percentage).quantize(Decimal('0.01'), ROUND_HALF_UP)))
 
     def on_change_probing_depth(self, fdi_number, pd, planes):
         # 閾値
@@ -278,7 +278,7 @@ class AgPCRView(tkinter.Frame):
         over_pd_planes, plaque_plane, percentage = self.aggregate_pd_pcr()
         self.pd_pcr_over_threshold_counter.set(over_pd_planes)
         self.pd_pcr_painted_counter.set(plaque_plane)
-        self.pd_pcr_percentage.set(round(percentage, 3))
+        self.pd_pcr_percentage.set(str(Decimal(percentage).quantize(Decimal('0.01'), ROUND_HALF_UP)))
 
         print((fdi_number, pd, planes))
 
@@ -288,5 +288,5 @@ class AgPCRView(tkinter.Frame):
         over_pd_planes, plaque_plane, percentage = self.aggregate_pd_pcr()
         self.pd_pcr_over_threshold_counter.set(over_pd_planes)
         self.pd_pcr_painted_counter.set(plaque_plane)
-        self.pd_pcr_percentage.set(round(percentage, 3))
+        self.pd_pcr_percentage.set(str(Decimal(percentage).quantize(Decimal('0.01'), ROUND_HALF_UP)))
         print((fdi_number, planes))
