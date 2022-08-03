@@ -11,7 +11,7 @@ class PCRController(tkinter.Frame):
                  on_change_missing_callback=None,
                  on_change_probing_depth_callback=None,
                  on_change_teeth_plane_callback=None):
-        super().__init__(master, pady=0)
+        super().__init__(master, padx=10, pady=10)
 
         # 歯の欠損状態が変化した際のコールバック関数
         self.on_change_missing_callback = on_change_missing_callback
