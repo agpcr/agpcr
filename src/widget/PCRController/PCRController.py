@@ -1,4 +1,5 @@
 import tkinter
+import tkinter.ttk as ttk
 from . import UpperTeethFrame
 from . import LowerTeethFrame
 from ..TeethCanvas import TeethPlaneState
@@ -85,7 +86,12 @@ class PCRController(tkinter.Frame):
         # # PCR入力部: 上顎の右側・左側の間に入るスペーサー
         # spacer1 = tkinter.Frame(self)
         # spacer1.grid(row=0, column=8, padx=0)
-
+        separator_red = ttk.Separator(
+            self,
+            style="red.TSeparator",
+            orient=tkinter.VERTICAL,
+        )
+        separator_red.grid(row=0, column=8, padx=20)
 
         # PCR入力部: 上顎 右の入力UI
         self.t21 = UpperTeethFrame(self,
