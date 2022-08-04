@@ -48,6 +48,9 @@ class ProbingDepth(tkinter.Frame):
         self.txt3.bind("<Shift-Return>", self.focus_prev)
         self.txt3.bind("<Return>", self.focus_next)
 
+    def get_entries(self):
+        return self.txt1, self.txt2, self.txt3
+
     @staticmethod
     def focus_next(ev):
         ev.widget.tk_focusNext().focus()
