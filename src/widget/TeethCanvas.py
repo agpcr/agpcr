@@ -72,25 +72,25 @@ class TeethCanvas(tkinter.Frame):
         self.ue = self.canvas.create_polygon(4, 4,
                                              canvas_width, 4,
                                              (canvas_width+4) / 2, (canvas_height+4) / 2,
-                                             fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
+                                             fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.MITER,
                                              tags=str(id) + "_l")
 
         self.migi = self.canvas.create_polygon(canvas_width, 4,
                                                canvas_width, canvas_height,
                                                (canvas_width+4) / 2, (canvas_height+4) / 2,
-                                               fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
+                                               fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.MITER,
                                                tags=str(id) + "_l")
 
         self.shita = self.canvas.create_polygon(canvas_width, canvas_height,
                                                 4, canvas_height,
                                                 (canvas_width+4) / 2, (canvas_height+4) / 2,
-                                                fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
+                                                fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.MITER,
                                                 tags=str(id) + "_l")
 
         self.hidari = self.canvas.create_polygon(4, canvas_height,
                                                  4, 4,
                                                  (canvas_width+4) / 2, (canvas_height+4) / 2,
-                                                 fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.BEVEL,
+                                                 fill=default_plane_color, outline='black', width=2.0, joinstyle=tkinter.MITER,
                                                  tags=str(id) + "_l")
 
         # obj_idとTeethPlaneの対応表
