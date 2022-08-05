@@ -4,7 +4,7 @@ from AgPCR import AgPCR
 
 def main():
     root = tkinter.Tk()
-    root.geometry('1400x400')
+    root.geometry('1400x420')
     root.wm_title("PCR")
 
     ag_pcr = AgPCR(root)
