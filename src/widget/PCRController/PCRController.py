@@ -82,16 +82,13 @@ class PCRController(tkinter.Frame):
                                    on_change_teeth_plane_callback=self.on_change_teeth_plane)
         self.t11.grid(row=0, column=7, padx=margin)
 
-
-        # # PCR入力部: 上顎の右側・左側の間に入るスペーサー
-        # spacer1 = tkinter.Frame(self)
-        # spacer1.grid(row=0, column=8, padx=0)
-        separator_red = ttk.Separator(
+        # PCR入力部: 上顎の右側・左側の間に入る縦の区切り線
+        separator_1 = ttk.Separator(
             self,
             style="red.TSeparator",
             orient=tkinter.VERTICAL,
         )
-        separator_red.grid(row=0, column=8, padx=20)
+        separator_1.grid(row=0, column=8, rowspan=3, sticky="ns", padx=30)
 
         # PCR入力部: 上顎 右の入力UI
         self.t21 = UpperTeethFrame(self,
@@ -150,13 +147,13 @@ class PCRController(tkinter.Frame):
                                    on_change_teeth_plane_callback=self.on_change_teeth_plane)
         self.t28.grid(row=0, column=16, padx=margin)
 
-
-
-        # PCR入力部: 上下のコンポーネントのスペースを開ける
-        spacer2 = tkinter.Frame(self)
-        spacer2.grid(row=1, column=0, pady=10)
-
-
+        # PCR入力部: 上下のコンポーネントを分離する横の線
+        separator_2 = ttk.Separator(
+            self,
+            style="red.TSeparator",
+            orient=tkinter.VERTICAL,
+        )
+        separator_2.grid(row=1, column=0, columnspan=17, sticky='ew', pady=20)
 
         # PCR入力部: 下顎 左の入力UI
         self.t48 = LowerTeethFrame(self,
@@ -215,11 +212,13 @@ class PCRController(tkinter.Frame):
                                    on_change_teeth_plane_callback=self.on_change_teeth_plane)
         self.t41.grid(row=2, column=7, padx=margin)
 
-
-        # PCR入力部: 下顎の右側・左側の間に入れるスペーサー
-        spacer3 = tkinter.Frame(self)
-        spacer3.grid(row=2, column=8, padx=30)
-
+        # PCR入力部: 上顎の右側・左側の間に入る縦の区切り線
+        separator_3 = ttk.Separator(
+            self,
+            style="red.TSeparator",
+            orient=tkinter.VERTICAL,
+        )
+        separator_3.grid(row=2, column=8, rowspan=1, sticky="ns")
 
         # PCR入力部: 下顎 右の入力UI
         self.t31 = LowerTeethFrame(self,

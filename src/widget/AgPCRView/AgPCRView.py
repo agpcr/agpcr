@@ -1,7 +1,9 @@
 import tkinter
+import tkinter.ttk as ttk
 from . import LowerTeethFramePDPCRView, UpperTeethFramePDPCRView
 from ..TeethCanvas import TeethPlane, TeethPlaneState, TeethState
 from decimal import Decimal, ROUND_HALF_UP
+
 
 class AgPCRView(tkinter.Frame):
 
@@ -33,11 +35,13 @@ class AgPCRView(tkinter.Frame):
         self.pd_pcr11 = UpperTeethFramePDPCRView(self, fdi_no="11")
         self.pd_pcr11.grid(row=0, column=7)
 
-
-        # PDPCRの表示部: 上顎の右側・左側を分けるスペーサー
-        spacer6 = tkinter.Frame(self)
-        spacer6.grid(row=0, column=8, padx=30)
-
+        # PDPCRの表示部: 上顎の右側・左側に入る縦の区切り線
+        separator_1 = ttk.Separator(
+            self,
+            style="red.TSeparator",
+            orient=tkinter.VERTICAL,
+        )
+        separator_1.grid(row=0, column=8, rowspan=3, sticky="ns", padx=30)
 
         # PDPCR表示部: 上顎 右
         self.pd_pcr21 = UpperTeethFramePDPCRView(self, fdi_no="21")
@@ -64,11 +68,13 @@ class AgPCRView(tkinter.Frame):
         self.pd_pcr28 = UpperTeethFramePDPCRView(self, fdi_no="28")
         self.pd_pcr28.grid(row=0, column=16)
 
-
-        # PDPCR表示部:上下のコンポーネントのスペースを開ける
-        spacer7 = tkinter.Frame(self)
-        spacer7.grid(row=1, column=0, pady=10)
-
+        # PDPCR表示部:上下のコンポーネント分離する横の線
+        separator_2 = ttk.Separator(
+            self,
+            style="red.TSeparator",
+            orient=tkinter.VERTICAL,
+        )
+        separator_2.grid(row=1, column=0, columnspan=17, sticky='ew', pady=20)
 
         # PDPCR表示部: 下顎 左
         self.pd_pcr48 = LowerTeethFramePDPCRView(self, fdi_no="48")
@@ -96,8 +102,12 @@ class AgPCRView(tkinter.Frame):
         self.pd_pcr41.grid(row=2, column=7)
 
         # 下顎の右側・左側の間に入れるスペーサー
-        spacer8 = tkinter.Frame(self)
-        spacer8.grid(row=2, column=8, padx=30)
+        separator_3 = ttk.Separator(
+            self,
+            style="red.TSeparator",
+            orient=tkinter.VERTICAL,
+        )
+        separator_3.grid(row=2, column=8, sticky="ns")
 
         self.pd_pcr31 = LowerTeethFramePDPCRView(self, fdi_no="31")
         self.pd_pcr31.grid(row=2, column=9)
