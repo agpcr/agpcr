@@ -180,28 +180,28 @@ class AgPCRView(tkinter.Frame):
         # PD4mm以上の歯数の計算結果表示
         # 残存歯のカウント表示用ラベルを作成
         self.pd_pcr_over_threshold_counter = tkinter.IntVar()
-        pd_pcr_over_threshold_label_widget = tkinter.Label(self, text="PD 4mm以上の歯面数")
-        pd_pcr_over_threshold_label_widget.grid(row=4, column=0, columnspan=2, sticky=tkinter.W)
+        pd_pcr_over_threshold_label_widget = tkinter.Label(self, text='Surfaces with PD≧4')
+        pd_pcr_over_threshold_label_widget.grid(row=4, column=0, columnspan=4, sticky=tkinter.W)
         pd_pcr_over_threshold_widget = tkinter.Label(self, textvariable=self.pd_pcr_over_threshold_counter)
-        pd_pcr_over_threshold_widget.grid(row=4, column=2, sticky=tkinter.W)
+        pd_pcr_over_threshold_widget.grid(row=4, column=3, sticky=tkinter.W)
         self.pd_pcr_over_threshold_counter.set(0)  # デフォルト値
 
         # プラーク面数結果表示
         # 歯面の塗られた数をカウント
         self.pd_pcr_painted_counter = tkinter.IntVar()
-        pd_pcr_painted_label_widget = tkinter.Label(self, text="プラーク歯面数")
-        pd_pcr_painted_label_widget.grid(row=5, column=0, columnspan=2, sticky=tkinter.W)
+        pd_pcr_painted_label_widget = tkinter.Label(self, text="Plaque-stained surfaces with PD≧4")
+        pd_pcr_painted_label_widget.grid(row=5, column=0, columnspan=4, sticky=tkinter.W)
         pd_pcr_painted_widget = tkinter.Label(self, textvariable=self.pd_pcr_painted_counter)
-        pd_pcr_painted_widget.grid(row=5, column=2, sticky=tkinter.W)
+        pd_pcr_painted_widget.grid(row=5, column=3, sticky=tkinter.W)
         self.pd_pcr_painted_counter.set(0)  # デフォルト値
 
         # 割合結果表示
         # 割合を表示
         self.pd_pcr_percentage = tkinter.StringVar()
-        pd_pcr_percentage_label_widget = tkinter.Label(self, text="agPCR割合")
-        pd_pcr_percentage_label_widget.grid(row=6, column=0, columnspan=2, sticky=tkinter.W)
+        pd_pcr_percentage_label_widget = tkinter.Label(self, text="agPCR")
+        pd_pcr_percentage_label_widget.grid(row=6, column=0, columnspan=4, sticky=tkinter.W)
         pd_pcr_percentage_widget = tkinter.Label(self, textvariable=self.pd_pcr_percentage)
-        pd_pcr_percentage_widget.grid(row=6, column=2, sticky=tkinter.W)
+        pd_pcr_percentage_widget.grid(row=6, column=3, sticky=tkinter.W)
         self.pd_pcr_percentage.set(str(Decimal(0).quantize(Decimal('0.01'), ROUND_HALF_UP)))  # デフォルト値
 
         # 初回計算

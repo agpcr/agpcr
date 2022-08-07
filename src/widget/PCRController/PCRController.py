@@ -190,28 +190,28 @@ class PCRController(tkinter.Frame):
         # 残存歯の計算結果表示
         # 残存歯のカウント表示用ラベルを作成
         self.remaining_teeth_counter = tkinter.IntVar()
-        remaining_teeth_label_widget = tkinter.Label(self, text="残存歯")
-        remaining_teeth_label_widget.grid(row=8, column=0, columnspan=2, sticky=tkinter.W)
+        remaining_teeth_label_widget = tkinter.Label(self, text="Number of teeth present")
+        remaining_teeth_label_widget.grid(row=8, column=0, columnspan=4, sticky=tkinter.W)
         remaining_teeth_widget = tkinter.Label(self, textvariable=self.remaining_teeth_counter)
-        remaining_teeth_widget.grid(row=8, column=2, sticky=tkinter.W)
+        remaining_teeth_widget.grid(row=8, column=3, sticky=tkinter.W)
         self.remaining_teeth_counter.set(0)  # デフォルト値
 
         # プラーク面数結果表示
         # 歯面の塗られた数をカウント
         self.painted_counter = tkinter.IntVar()
-        painted_label_widget = tkinter.Label(self, text="プラーク歯面数")
-        painted_label_widget.grid(row=9, column=0, columnspan=2, sticky=tkinter.W)
+        painted_label_widget = tkinter.Label(self, text="Plaque-stained surfaces")
+        painted_label_widget.grid(row=9, column=0, columnspan=4, sticky=tkinter.W)
         painted_widget = tkinter.Label(self, textvariable=self.painted_counter)
-        painted_widget.grid(row=9, column=2, sticky=tkinter.W)
+        painted_widget.grid(row=9, column=3, sticky=tkinter.W)
         self.painted_counter.set(0)  # デフォルト値
 
         # 割合結果表示
         # 割合を表示
         self.percentage = tkinter.StringVar()
-        percentage_label_widget = tkinter.Label(self, text="割合")
-        percentage_label_widget.grid(row=10, column=0, columnspan=2, sticky=tkinter.W)
+        percentage_label_widget = tkinter.Label(self, text="conventional PCR")
+        percentage_label_widget.grid(row=10, column=0, columnspan=4, sticky=tkinter.W)
         percentage_widget = tkinter.Label(self, textvariable=self.percentage)
-        percentage_widget.grid(row=10, column=2, sticky=tkinter.W)
+        percentage_widget.grid(row=10, column=3, sticky=tkinter.W)
         self.percentage.set(str(Decimal('0.000').quantize(Decimal('0.01'), ROUND_HALF_UP)))  # デフォルト値
 
         # 初回計算
