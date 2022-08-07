@@ -13,7 +13,7 @@ class UpperTeethFramePDPCRView(tkinter.Frame):
         self.teeth_canvas_frame = TeethCanvas(master=self,
                                               is_paintable=False,
                                               missing_color='gray7',
-                                              under_pd_threshold_color='gray26')
+                                              under_pd_threshold_color='gray54')
         self.teeth_canvas_frame.pack()
         self.teeth_canvas_frame.set_teeth_plane_state(TeethPlane.TOP, TeethPlaneState.UNDER_PD)
         self.teeth_canvas_frame.set_teeth_plane_state(TeethPlane.RIGHT, TeethPlaneState.UNDER_PD)

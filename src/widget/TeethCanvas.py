@@ -25,8 +25,8 @@ class TeethCanvas(tkinter.Frame):
                  master=None,
                  normal_color='white',
                  plaque_color='red',
-                 missing_color='gray54',
-                 under_pd_threshold_color='gray26',
+                 missing_color='gray26',
+                 under_pd_threshold_color='gray54',
                  is_paintable=True,
                  on_change_teeth_plane_callback=None,
                  initial_teeth_state=TeethState.NORMAL):
