@@ -8,13 +8,15 @@ class LowerTeethFrame(tkinter.Frame):
                  fdi_number=None,
                  on_change_missing_callback=None,
                  on_change_probing_depth_callback=None,
-                 on_change_teeth_plane_callback=None):
+                 on_change_teeth_plane_callback=None,
+                 top_pd_frame=None,
+                 bottom_pd_frame=None):
         super().__init__(master,
                          width=64,
                          height=144,
-                         borderwidth=1,
+                         borderwidth=0,
                          relief='solid',
-                         bd=0, highlightcolor='gray70', highlightbackground="gray70", highlightthickness=1)
+                         bd=0, highlightcolor='gray70', highlightbackground="gray70", highlightthickness=0)
 
         self.on_change_missing_callback = on_change_missing_callback
         self.on_change_probing_depth_callback = on_change_probing_depth_callback
@@ -24,7 +26,7 @@ class LowerTeethFrame(tkinter.Frame):
         self.is_missing_teeth = False
 
         # PDの入力欄をまとめるフレーム
-        self.pd_frame1 = ProbingDepth(master=self, on_change=self.on_change_probing_depth)
+        self.pd_frame1 = ProbingDepth(master=top_pd_frame, on_change=self.on_change_probing_depth)
         self.pd_frame1.pack()
 
         # 染められる歯面を描画するCanvasの生成
@@ -39,7 +41,7 @@ class LowerTeethFrame(tkinter.Frame):
         self.missing_teeth_toggle_button_frame.pack()
 
         # PDの入力欄をまとめるフレーム
-        self.pd_frame2 = ProbingDepth(master=self, on_change=self.on_change_probing_depth)
+        self.pd_frame2 = ProbingDepth(master=bottom_pd_frame, on_change=self.on_change_probing_depth)
         self.pd_frame2.pack()
 
     def on_click_missing_teeth_toggle(self, ev, fdi_number):

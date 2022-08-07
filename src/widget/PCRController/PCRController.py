@@ -26,61 +26,85 @@ class PCRController(tkinter.Frame):
         margin = 1
 
         # PCR入力部: 上顎 左の入力UI
-        self.t18 = UpperTeethFrame(self,
-                                   fdi_number=18,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t18.grid(row=0, column=0, padx=margin)
+        upper_fdi_column_map = {
+            18: 0,
+            17: 1,
+            16: 2,
+            15: 3,
+            14: 4,
+            13: 5,
+            12: 6,
+            11: 7,
 
-        self.t17 = UpperTeethFrame(self,
-                                   fdi_number=17,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t17.grid(row=0, column=1, padx=margin)
+            21: 9,
+            22: 10,
+            23: 11,
+            24: 12,
+            25: 13,
+            26: 14,
+            27: 15,
+            28: 16
+        }
 
-        self.t16 = UpperTeethFrame(self,
-                                   fdi_number=16,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t16.grid(row=0, column=2, padx=margin)
+        lower_fdi_column_map = {
+            48: 0,
+            47: 1,
+            46: 2,
+            45: 3,
+            44: 4,
+            43: 5,
+            42: 6,
+            41: 7,
 
-        self.t15 = UpperTeethFrame(self,
-                                   fdi_number=15,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t15.grid(row=0, column=3, padx=margin)
+            31: 9,
+            32: 10,
+            33: 11,
+            34: 12,
+            35: 13,
+            36: 14,
+            37: 15,
+            38: 16
+        }
 
-        self.t14 = UpperTeethFrame(self,
-                                   fdi_number=14,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t14.grid(row=0, column=4, padx=margin)
+        upper_top_pd_col_frames = {}
+        for fdi_number, col in upper_fdi_column_map.items():
+            pd_frame = tkinter.Frame(self)
+            pd_frame.grid(row=0, column=col)
+            upper_top_pd_col_frames[fdi_number] = pd_frame
 
-        self.t13 = UpperTeethFrame(self,
-                                   fdi_number=13,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t13.grid(row=0, column=5, padx=margin)
+        uppper_bottom_pd_col_frames = {}
+        for fdi_number, col in upper_fdi_column_map.items():
+            pd_frame = tkinter.Frame(self)
+            pd_frame.grid(row=2, column=col)
+            uppper_bottom_pd_col_frames[fdi_number] = pd_frame
 
-        self.t12 = UpperTeethFrame(self,
-                                   fdi_number=12,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t12.grid(row=0, column=6, padx=margin)
 
-        self.t11 = UpperTeethFrame(self,
-                                   fdi_number=11,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t11.grid(row=0, column=7, padx=margin)
+        lower_top_pd_col_frames = {}
+        for fdi_number, col in lower_fdi_column_map.items():
+            pd_frame = tkinter.Frame(self)
+            pd_frame.grid(row=4, column=col)
+            lower_top_pd_col_frames[fdi_number] = pd_frame
+
+        lower_bottom_pd_col_frames = {}
+        for fdi_number, col in lower_fdi_column_map.items():
+            pd_frame = tkinter.Frame(self)
+            pd_frame.grid(row=6, column=col)
+            lower_bottom_pd_col_frames[fdi_number] = pd_frame
+
+        upper = [18, 17, 16, 15, 14, 13, 12, 11,  21, 22, 23, 24, 25, 26, 27, 28]
+        lower = [48, 47, 46, 45, 44, 43, 42, 41,  31, 32, 33, 34, 35, 36, 37, 38]
+
+        self.pcr_frames = {}
+        for fdi_number in upper:
+            teeth_frame = UpperTeethFrame(self,
+                                          fdi_number=fdi_number,
+                                          on_change_missing_callback=self.on_change_missing,
+                                          on_change_probing_depth_callback=self.on_change_probing_depth,
+                                          on_change_teeth_plane_callback=self.on_change_teeth_plane,
+                                          top_pd_frame=upper_top_pd_col_frames[fdi_number],
+                                          bottom_pd_frame=uppper_bottom_pd_col_frames[fdi_number])
+            teeth_frame.grid(row=1, column=upper_fdi_column_map[fdi_number], padx=margin)
+            self.pcr_frames[fdi_number] = teeth_frame
 
         # PCR入力部: 上顎の右側・左側の間に入る縦の区切り線
         separator_1 = ttk.Separator(
@@ -88,64 +112,7 @@ class PCRController(tkinter.Frame):
             style="red.TSeparator",
             orient=tkinter.VERTICAL,
         )
-        separator_1.grid(row=0, column=8, rowspan=3, sticky="ns", padx=30)
-
-        # PCR入力部: 上顎 右の入力UI
-        self.t21 = UpperTeethFrame(self,
-                                   fdi_number=21,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t21.grid(row=0, column=9, padx=margin)
-
-        self.t22 = UpperTeethFrame(self,
-                                   fdi_number=22,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t22.grid(row=0, column=10, padx=margin)
-
-        self.t23 = UpperTeethFrame(self,
-                                   fdi_number=23,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t23.grid(row=0, column=11, padx=margin)
-
-        self.t24 = UpperTeethFrame(self,
-                                   fdi_number=24,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t24.grid(row=0, column=12, padx=margin)
-
-        self.t25 = UpperTeethFrame(self,
-                                   fdi_number=25,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t25.grid(row=0, column=13, padx=margin)
-
-        self.t26 = UpperTeethFrame(self,
-                                   fdi_number=26,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t26.grid(row=0, column=14, padx=margin)
-
-        self.t27 = UpperTeethFrame(self,
-                                   fdi_number=27,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t27.grid(row=0, column=15, padx=margin)
-
-        self.t28 = UpperTeethFrame(self,
-                                   fdi_number=28,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t28.grid(row=0, column=16, padx=margin)
+        separator_1.grid(row=0, column=8, rowspan=7, sticky="ns", padx=30)
 
         # PCR入力部: 上下のコンポーネントを分離する横の線
         separator_2 = ttk.Separator(
@@ -153,199 +120,98 @@ class PCRController(tkinter.Frame):
             style="red.TSeparator",
             orient=tkinter.VERTICAL,
         )
-        separator_2.grid(row=1, column=0, columnspan=17, sticky='ew', pady=20)
+        separator_2.grid(row=3, column=0, columnspan=17, sticky='ew', pady=20)
 
         # PCR入力部: 下顎 左の入力UI
-        self.t48 = LowerTeethFrame(self,
-                                   fdi_number=48,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t48.grid(row=2, column=0, padx=margin)
-
-        self.t47 = LowerTeethFrame(self,
-                                   fdi_number=47,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t47.grid(row=2, column=1, padx=margin)
-
-        self.t46 = LowerTeethFrame(self,
-                                   fdi_number=46,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t46.grid(row=2, column=2, padx=margin)
-
-        self.t45 = LowerTeethFrame(self,
-                                   fdi_number=45,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t45.grid(row=2, column=3, padx=margin)
-
-        self.t44 = LowerTeethFrame(self,
-                                   fdi_number=44,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t44.grid(row=2, column=4, padx=margin)
-
-        self.t43 = LowerTeethFrame(self,
-                                   fdi_number=43,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t43.grid(row=2, column=5, padx=margin)
-
-        self.t42 = LowerTeethFrame(self,
-                                   fdi_number=42,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t42.grid(row=2, column=6, padx=margin)
-
-        self.t41 = LowerTeethFrame(self,
-                                   fdi_number=41,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t41.grid(row=2, column=7, padx=margin)
+        for fdi_number in lower:
+            teeth_frame = LowerTeethFrame(self,
+                                          fdi_number=fdi_number,
+                                          on_change_missing_callback=self.on_change_missing,
+                                          on_change_probing_depth_callback=self.on_change_probing_depth_callback,
+                                          on_change_teeth_plane_callback=self.on_change_teeth_plane,
+                                          top_pd_frame=lower_top_pd_col_frames[fdi_number],
+                                          bottom_pd_frame=lower_bottom_pd_col_frames[fdi_number])
+            teeth_frame.grid(row=5, column=lower_fdi_column_map[fdi_number], padx=margin)
+            self.pcr_frames[fdi_number] = teeth_frame
 
         # PCR入力部: 上顎の右側・左側の間に入る縦の区切り線
-        separator_3 = ttk.Separator(
-            self,
-            style="red.TSeparator",
-            orient=tkinter.VERTICAL,
-        )
-        separator_3.grid(row=2, column=8, rowspan=1, sticky="ns")
+        # separator_3 = ttk.Separator(
+        #     self,
+        #     style="red.TSeparator",
+        #     orient=tkinter.VERTICAL,
+        # )
+        # separator_3.grid(row=5, column=8, rowspan=1, sticky="ns")
 
-        # PCR入力部: 下顎 右の入力UI
-        self.t31 = LowerTeethFrame(self,
-                                   fdi_number=31,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t31.grid(row=2, column=9, padx=margin)
 
-        self.t32 = LowerTeethFrame(self,
-                                   fdi_number=32,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t32.grid(row=2, column=10, padx=margin)
-
-        self.t33 = LowerTeethFrame(self,
-                                   fdi_number=33,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t33.grid(row=2, column=11, padx=margin)
-
-        self.t34 = LowerTeethFrame(self,
-                                   fdi_number=34,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t34.grid(row=2, column=12, padx=margin)
-
-        self.t35 = LowerTeethFrame(self,
-                                   fdi_number=35,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t35.grid(row=2, column=13, padx=margin)
-
-        self.t36 = LowerTeethFrame(self,
-                                   fdi_number=36,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t36.grid(row=2, column=14, padx=margin)
-
-        self.t37 = LowerTeethFrame(self,
-                                   fdi_number=37,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t37.grid(row=2, column=15, padx=margin)
-
-        self.t38 = LowerTeethFrame(self,
-                                   fdi_number=38,
-                                   on_change_missing_callback=self.on_change_missing,
-                                   on_change_probing_depth_callback=self.on_change_probing_depth_callback,
-                                   on_change_teeth_plane_callback=self.on_change_teeth_plane)
-        self.t38.grid(row=2, column=16, padx=margin)
-
-        self.pcr_frames = {
-            18: self.t18,
-            17: self.t17,
-            16: self.t16,
-            15: self.t15,
-            14: self.t14,
-            13: self.t13,
-            12: self.t12,
-            11: self.t11,
-
-            21: self.t21,
-            22: self.t22,
-            23: self.t23,
-            24: self.t24,
-            25: self.t25,
-            26: self.t26,
-            27: self.t27,
-            28: self.t28,
-
-            48: self.t48,
-            47: self.t47,
-            46: self.t46,
-            45: self.t45,
-            44: self.t44,
-            43: self.t43,
-            42: self.t42,
-            41: self.t41,
-
-            31: self.t31,
-            32: self.t32,
-            33: self.t33,
-            34: self.t34,
-            35: self.t35,
-            36: self.t36,
-            37: self.t37,
-            38: self.t38,
-        }
+        # self.pcr_frames = {
+        #     18: self.t18,
+        #     17: self.t17,
+        #     16: self.t16,
+        #     15: self.t15,
+        #     14: self.t14,
+        #     13: self.t13,
+        #     12: self.t12,
+        #     11: self.t11,
+        #
+        #     21: self.t21,
+        #     22: self.t22,
+        #     23: self.t23,
+        #     24: self.t24,
+        #     25: self.t25,
+        #     26: self.t26,
+        #     27: self.t27,
+        #     28: self.t28,
+        #
+        #     48: self.t48,
+        #     47: self.t47,
+        #     46: self.t46,
+        #     45: self.t45,
+        #     44: self.t44,
+        #     43: self.t43,
+        #     42: self.t42,
+        #     41: self.t41,
+        #
+        #     31: self.t31,
+        #     32: self.t32,
+        #     33: self.t33,
+        #     34: self.t34,
+        #     35: self.t35,
+        #     36: self.t36,
+        #     37: self.t37,
+        #     38: self.t38,
+        # }
 
         #####################################################
         # PCR入力部と、PDPCRの表示部を上下に分けるスペーサー
         #####################################################
         spacer4 = tkinter.Frame(self)
-        spacer4.grid(row=3, column=0, pady=10)
+        spacer4.grid(row=7, column=0, pady=10)
 
         # 残存歯の計算結果表示
         # 残存歯のカウント表示用ラベルを作成
         self.remaining_teeth_counter = tkinter.IntVar()
         remaining_teeth_label_widget = tkinter.Label(self, text="残存歯")
-        remaining_teeth_label_widget.grid(row=4, column=0, columnspan=2, sticky=tkinter.W)
+        remaining_teeth_label_widget.grid(row=8, column=0, columnspan=2, sticky=tkinter.W)
         remaining_teeth_widget = tkinter.Label(self, textvariable=self.remaining_teeth_counter)
-        remaining_teeth_widget.grid(row=4, column=2, sticky=tkinter.W)
+        remaining_teeth_widget.grid(row=8, column=2, sticky=tkinter.W)
         self.remaining_teeth_counter.set(0)  # デフォルト値
 
         # プラーク面数結果表示
         # 歯面の塗られた数をカウント
         self.painted_counter = tkinter.IntVar()
         painted_label_widget = tkinter.Label(self, text="プラーク歯面数")
-        painted_label_widget.grid(row=5, column=0, columnspan=2, sticky=tkinter.W)
+        painted_label_widget.grid(row=9, column=0, columnspan=2, sticky=tkinter.W)
         painted_widget = tkinter.Label(self, textvariable=self.painted_counter)
-        painted_widget.grid(row=5, column=2, sticky=tkinter.W)
+        painted_widget.grid(row=9, column=2, sticky=tkinter.W)
         self.painted_counter.set(0)  # デフォルト値
 
         # 割合結果表示
         # 割合を表示
         self.percentage = tkinter.StringVar()
         percentage_label_widget = tkinter.Label(self, text="割合")
-        percentage_label_widget.grid(row=6, column=0, columnspan=2, sticky=tkinter.W)
+        percentage_label_widget.grid(row=10, column=0, columnspan=2, sticky=tkinter.W)
         percentage_widget = tkinter.Label(self, textvariable=self.percentage)
-        percentage_widget.grid(row=6, column=2, sticky=tkinter.W)
+        percentage_widget.grid(row=10, column=2, sticky=tkinter.W)
         self.percentage.set(str(Decimal('0.000').quantize(Decimal('0.01'), ROUND_HALF_UP)))  # デフォルト値
 
         # 初回計算
