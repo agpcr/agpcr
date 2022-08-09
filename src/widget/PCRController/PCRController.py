@@ -208,7 +208,7 @@ class PCRController(tkinter.Frame):
         # 割合結果表示
         # 割合を表示
         self.percentage = tkinter.StringVar()
-        percentage_label_widget = tkinter.Label(self, text="conventional PCR")
+        percentage_label_widget = tkinter.Label(self, text="O'Leary PCR")
         percentage_label_widget.grid(row=10, column=0, columnspan=4, sticky=tkinter.W)
         percentage_widget = tkinter.Label(self, textvariable=self.percentage)
         percentage_widget.grid(row=10, column=3, sticky=tkinter.W)
